@@ -1,16 +1,11 @@
 Express & ES6 REST API Boilerplate
 ==================================
 
-[![bitHound Score](https://www.bithound.io/github/developit/express-es6-rest-api/badges/score.svg)](https://www.bithound.io/github/developit/express-es6-rest-api)
-
 This is a straightforward boilerplate for building REST APIs with ES6 and Express.
 
 - ES6 support via [babel](https://babeljs.io)
-- REST resources as middleware via [resource-router-middleware](https://github.com/developit/resource-router-middleware)
 - CORS support via [cors](https://github.com/troygoode/node-cors)
 - Body Parsing via [body-parser](https://github.com/expressjs/body-parser)
-
-> Tip: If you are using [Mongoose](https://github.com/Automattic/mongoose), you can automatically expose your Models as REST resources using [restful-mongoose](https://git.io/restful-mongoose).
 
 Getting Started
 ---------------
@@ -27,10 +22,10 @@ rm -rf .git && git init && npm init
 npm install
 
 # Start development live-reload server
-PORT=8080 npm run dev
+npm run dev
 
 # Start production server:
-PORT=8080 npm start
+npm start
 ```
 Docker Support
 ------
@@ -51,9 +46,51 @@ docker run -p 8080:8080 es6/api-service
 
 ```
 
-Docker Demo
--------------------------
-It's supposed to be pretty easy to take your Docker to your favourite cloud service, here's a demo of what's our Dockerized bolierplate is like: [https://docker-deployment-yudfxfiaja.now.sh/api](https://docker-deployment-yudfxfiaja.now.sh/api)
+Project dir
+-------
+```
+└ project
+  ├ src/                    # <-- Directory contains all source code
+  | |
+  | ├ conf/                 # <-- Directory contains all config
+  | |
+  | ├ controllers/          # <-- Directory contains all controllers
+  | |
+  | ├ models/               # <-- Directory contains all models.
+  | |
+  | ├ middleware/           # <-- Directory contains middleware such as authentication.
+  | |
+  ├ dist/                   # <-- Auto generated directory contains compiled
+  |                         #     library to use in production.
+  |
+  ├ build/                  # <-- Auto generated directory contains compiled
+  |                         #     artifacts for test & dev.
+  |
+  ├ .babelrc                # <-- Babel configuration file.
+  |
+  ├ .eslintrc               # <-- ESLint configuration file.
+  |
+  ├ index.js                # <-- Entry file. Load in build if NODE_ENV is
+  |                         #     "development" or lib if NODE_ENV is "production"
+  ├ router.js               # <-- Router file
+  |
+  ├ package.json            # <-- npm configuration file. Contains magic.
+  |
+  ├ README.md               # <-- This stupid file.
+  |
+  └  ...
+```
+
+Notes
+-------
+When creating new model, edit .src/models/index.js to add your new model below the lines (ofcourse, import it first)
+```
+const modules = [
+  Student,
+  BnCEvent,
+  ...
+]
+```
 
 License
 -------
