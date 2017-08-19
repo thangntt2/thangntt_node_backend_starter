@@ -26,6 +26,12 @@ npm run dev
 
 # Start production server:
 npm start
+
+# Create migrate file
+npm run migrate:create
+
+# Run migrate
+npm run migrate:latest
 ```
 Docker Support
 ------
@@ -59,6 +65,8 @@ Project dir
   | ├ models/               # <-- Directory contains all models.
   | |
   | ├ middleware/           # <-- Directory contains middleware such as authentication.
+  | |
+  | ├ migrations/           # <-- Directory contains migrations files
   | |
   ├ dist/                   # <-- Auto generated directory contains compiled
   |                         #     library to use in production.
