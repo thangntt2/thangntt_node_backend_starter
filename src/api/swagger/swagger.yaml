@@ -3,7 +3,6 @@ info:
   description: "BlaynCafe root API"
   version: "0.1.0"
   title: "BlaynCafe API"
-host: "localhost:3000"
 basePath: "/api"
 tags:
 - name: "Student"

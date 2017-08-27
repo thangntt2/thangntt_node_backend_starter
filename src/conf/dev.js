@@ -7,5 +7,6 @@ export default {
   PORT: 3000,
   appRoot: path.join(__dirname, '../'),
   swaggerFile: path.join(__dirname, '../api/swagger/swagger.yaml'),
-  swaggerFileUrl: '/swagger'
+  swaggerFileUrl: '/swagger',
+  host: 'http://localhost:3000'
 }

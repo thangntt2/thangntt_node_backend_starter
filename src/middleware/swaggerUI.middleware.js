@@ -1,5 +1,9 @@
 import swaggerUi from 'swagger-ui-express'
+import config from '../conf'
 
 export default (app) => {
-  app.use('/ui', swaggerUi.serve, swaggerUi.setup(null, null, null, null, null, 'http://localhost:3000/api-docs'))
+  const options = {
+    host: config.host
+  }
+  app.use('/ui', swaggerUi.serve, swaggerUi.setup(null, null, options, null, null, `${config.host}/api-docs`))
 }
