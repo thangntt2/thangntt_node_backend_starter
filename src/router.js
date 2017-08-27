@@ -10,9 +10,14 @@ export default (app) => {
    */
   app.use((req, res, next) => {
     const operation = req.swagger.operation
-    if (operation && operation.operationId) {
+    if (operation && operation.operationId && routerDefine[operation.operationId]) {
       console.log(`call to serve ${operation.operationId}`)
       return routerDefine[operation.operationId](req, res, next)
+    } else {
+      console.log(`missing handler with operationId: ${operation.operationId}`)
+      res.status(500)
+        .send('missing handler for current route')
+        .end()
     }
   })
 

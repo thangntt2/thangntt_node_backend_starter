@@ -44,7 +44,8 @@
     "passport-http-bearer": "^1.0.1",
     "resource-router-middleware": "^0.6.0",
     "sequelize": "^4.5.0",
-    "swagger-express-middleware": "^1.0.0-alpha.12"
+    "swagger-express-middleware": "^1.0.0-alpha.12",
+    "swagger-ui-express": "^2.0.6"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
