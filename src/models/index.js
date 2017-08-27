@@ -2,6 +2,8 @@ import Sequelize from 'sequelize'
 
 import Student from './student.model'
 import BnCEvent from './event.model'
+import AccessToken from './accessToken.model'
+import Sponsor from './sponsor.model'
 import config from '../conf'
 
 export const sequelize = new Sequelize(config.MYSQL_DB, config.MYSQL_USER, config.MYSQL_PASSWORD, {
@@ -14,8 +16,10 @@ export const sequelize = new Sequelize(config.MYSQL_DB, config.MYSQL_USER, confi
 const models = {}
 
 const modules = [
+  AccessToken,
   Student,
-  BnCEvent
+  BnCEvent,
+  Sponsor
 ]
 
 // Initialize models
