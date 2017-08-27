@@ -8,7 +8,7 @@ export default (app) => {
   /**
    * Router handler
    */
-  app.use((req, res, next) => {
+  app.all('/api/*', (req, res, next) => {
     const operation = req.swagger.operation
     if (operation && operation.operationId && routerDefine[operation.operationId]) {
       console.log(`call to serve ${operation.operationId}`)
