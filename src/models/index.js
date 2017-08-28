@@ -4,6 +4,8 @@ import Student from './student.model'
 import BnCEvent from './event.model'
 import AccessToken from './accessToken.model'
 import Sponsor from './sponsor.model'
+import StudentEvents from './studentEvents.model'
+import Admin from './admin.model'
 import config from '../conf'
 
 export const sequelize = new Sequelize(config.MYSQL_DB, config.MYSQL_USER, config.MYSQL_PASSWORD, {
@@ -19,7 +21,9 @@ const modules = [
   AccessToken,
   Student,
   BnCEvent,
-  Sponsor
+  Sponsor,
+  StudentEvents,
+  Admin,
 ]
 
 // Initialize models

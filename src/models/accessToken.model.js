@@ -8,6 +8,7 @@ export default (sequelize, DataTypes) => {
   AccessToken.associate = (models) => {
     AccessToken.belongsTo(models.Student)
     AccessToken.belongsTo(models.Sponsor)
+    AccessToken.belongsTo(models.Admin)
   }
 
   return AccessToken

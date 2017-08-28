@@ -1,8 +1,8 @@
 import path from 'path'
 export default {
-  MYSQL_DB: 'blayncafe',
-  MYSQL_USER: 'root',
-  MYSQL_PASSWORD: '',
+  MYSQL_DB: 'bayncafe',
+  MYSQL_USER: 'bayncafe',
+  MYSQL_PASSWORD: '123456',
   MYSQL_HOST: 'localhost',
   PORT: 3000,
   appRoot: path.join(__dirname, '../'),
