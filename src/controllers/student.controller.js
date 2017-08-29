@@ -7,7 +7,19 @@ const fetchAll = async (req, res) => {
 
 const newStudent = async (req, res) => {
   await models.Student.create({
-    username: req.body.name
+    firstName: "vu",
+    lastName: "cuong",
+    email: req.body.email,
+    admissionYear: req.body.admissionYear,
+    department: req.body.department,
+    dateOfBirth: req.body.dateOfBirth,
+    sex: "male",
+    password: req.body.password,
+    studentCard: req.body.studentCard,
+    image: req.body.image,
+    studentNumber: req.body.studentNumber,
+    barcode: "123456789",
+    status: "member",
   })
   res.status(201).end()
 }

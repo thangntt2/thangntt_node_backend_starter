@@ -1,6 +1,10 @@
 export default (sequelize, DataTypes) => {
   var Student = sequelize.define('Student', {
-    username: {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false
     },

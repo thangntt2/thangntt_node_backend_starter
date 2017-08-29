@@ -22,6 +22,7 @@ paths:
       tags:
       - "Student"
       summary: "Register new student"
+      operationId: "newStudent"
       parameters: 
       - in: "body"
         name: "student"

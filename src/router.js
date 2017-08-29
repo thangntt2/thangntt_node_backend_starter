@@ -1,7 +1,9 @@
 import * as Controllers from './controllers'
 
 const routerDefine = {
-  studentList: Controllers.Student.fetchAll
+  studentList: Controllers.Student.fetchAll,
+  sponsorList: Controllers.Sponsor.fetchAll,
+  newStudent: Controllers.Student.newStudent,
 }
 
 export default (app) => {
