@@ -42,6 +42,17 @@ paths:
       tags:
       - "Student"
       summary: "Student login"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
       responses:
         401:
           description: "Invalidate email or password"
@@ -90,6 +101,24 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/Event"
+  /student/{id}/barcode:
+    get:
+      tags:
+      - "Admin"
+      summary: "Find student with given barcode"
+      parameters:
+      - in: "path"
+        name: "id"
+        description: "Student ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Return student with given barcode"
+          schema:
+            $ref: "#/definitions/Student"
+        404:
+          description: "Not found any student with given barcode"
   /student/event/join:
     post:
       tags:
@@ -110,6 +139,8 @@ paths:
           description: "Invalidate access token"
         200:
           description: "Successful enrolled event"
+      security:
+      - StudentSecurity: []
   /student/event/cancel:
     post:
       tags:
@@ -210,6 +241,17 @@ paths:
       tags:
       - "Sponsor"
       summary: "Sponsor login"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
       responses:
         401:
           description: "Invalidate email or password"
@@ -258,6 +300,54 @@ paths:
               $ref: "#/definitions/Student"
       security:
       - AdminSecurity: []
+  /student/{id}/status:
+    post:
+      tags:
+      - "Admin"
+      summary: "Set status of student: member, under review, deactivate"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student to return"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "status"
+        description: "Status will be assign to student"
+        required: true
+        schema:
+          type: "string"
+          enum:
+          - "member"
+          - "under_review"
+          - "deactivate"
+      responses:
+        200:
+          description: "Successful change student status"
+        404:
+          description: "Not found student with that ID"
+      security:
+      - AdminSecurity: []
+  /student/{id}:
+    get:
+      tags:
+      - "Admin"
+      summary: "Get student information"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student to return"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Invalid student ID"
+        200:
+          description: "Return student information with studentId"
+          schema:
+            $ref: "#/definitions/Student"
+      security:
+      - AdminSecurity: []
   /sponsor:
     get:
       tags:
@@ -289,6 +379,51 @@ paths:
               $ref: "#/definitions/Sponsor"
       security:
       - AdminSecurity: []
+  /sponsor/{id}:
+    get:
+      tags:
+      - "Admin"
+      summary: "Get sponsor information"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of sponsor to return"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Invalid sponsor ID"
+        200:
+          description: "Return sponsor information with that ID"
+          schema:
+            $ref: "#/definitions/Sponsor"
+      security:
+      - AdminSecurity: []
+  /event/{id}:
+    get:
+      tags:
+      - "Admin"
+      - "Student"
+      - "Sponsor"
+      - "Event"
+      summary: "Get event information"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of event to return"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Invalid event ID"
+        200:
+          description: "Return event information with that ID"
+          schema:
+            $ref: "#/definitions/Event"
+      security:
+      - AdminSecurity: []
+      - SponsorSecurity: []
+      - StudentSecurity: []
       
 securityDefinitions:
   AdminSecurity:
