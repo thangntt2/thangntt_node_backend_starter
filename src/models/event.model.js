@@ -30,8 +30,21 @@ export default (sequelize, DataTypes) => {
   })
 
   Event.associate = (models) => {
-    Event.belongsToMany(models.Student, {through: 'StudentEvents'})
-    Event.belongsTo(models.Sponsor)
+    Event.belongsToMany(models.Student, 
+      {
+        through: 'StudentEvents',
+        foreignKey: 'eventId', 
+        constraints: true, 
+        onDelete: 'cascade'
+      }
+    )
+
+    Event.belongsTo(models.Sponsor,
+      {
+        foreignKey: 'sponsorId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
   }
 
   return Event

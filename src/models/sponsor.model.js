@@ -80,8 +80,19 @@ export default (sequelize, DataTypes) => {
   })
 
   Sponsor.associate = (models) => {
-    Sponsor.hasMany(models.Event)
-    Sponsor.hasMany(models.AccessToken)
+    Sponsor.hasMany(models.Event, 
+      {
+        foreignKey: 'sponsorId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
+
+    Sponsor.hasMany(models.AccessToken,
+      {
+        foreignKey: 'sponsorId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
   }
 
   return Sponsor

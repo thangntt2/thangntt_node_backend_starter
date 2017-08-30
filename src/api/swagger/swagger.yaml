@@ -42,6 +42,7 @@ paths:
       tags:
       - "Student"
       summary: "Student login"
+      operationId: "loginStudent"
       parameters:
       - name: "username"
         in: "query"

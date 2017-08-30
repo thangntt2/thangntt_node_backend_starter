@@ -1,4 +1,5 @@
 import models from '../models'
+const uuidv4 = require('uuid/v4')
 
 const fetchAll = async (req, res) => {
   const students = await models.Student.findAll({})
@@ -24,7 +25,30 @@ const newStudent = async (req, res) => {
   res.status(201).end()
 }
 
+const loginStudent = async (req, res) => {
+  var email = req.query.username
+  var password = req.query.password
+   await models.Student.findOne({
+    where: {
+      email: email,
+      password: password
+    }
+  }).then(user => {
+      if(!user){
+        res.status(404).end()
+      }
+
+      const access = models.AccessToken.create({
+        accessToken: uuidv4(),
+        expiredTime: Date.now() + 6 * 3600 *1000,
+        userType: "student",
+        studentId: user.id,
+      })
+      res.send("ok").status(200).end()
+    })
+}
 export default {
   fetchAll,
-  newStudent
+  newStudent,
+  loginStudent
 }

@@ -58,8 +58,20 @@ export default (sequelize, DataTypes) => {
   })
 
   Student.associate = (models) => {
-    Student.belongsToMany(models.Event, {through: 'StudentEvents'})
-    Student.hasMany(models.AccessToken)
+    Student.belongsToMany(models.Event, 
+      {
+        through: 'StudentEvents',
+        foreignKey: 'studentId', 
+        constraints: true,
+        onDelete: 'cascade'
+      }
+    )
+    Student.hasMany(models.AccessToken,
+      {
+        foreignKey: 'studentId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
   }
 
   return Student

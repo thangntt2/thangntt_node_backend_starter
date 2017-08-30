@@ -12,7 +12,12 @@ export default (sequelize, DataTypes) => {
   })
 
   Admin.associate = (models) => {
-    Admin.hasMany(models.AccessToken)
+    Admin.hasMany(models.AccessToken,
+      {
+        foreignKey: 'adminId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
   }
   return Admin
 }
