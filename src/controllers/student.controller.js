@@ -48,12 +48,20 @@ const loginStudent = async (req, res) => {
   const accessToken = await models.AccessToken.create({
     accessToken: uuidv4(),
     expiredTime: Date.now() + 6 * 3600 * 1000,
-    userType: 'student',
-    studentId: student.id
+    userType: 'student'
   }, {
     include: [models.Student]
   })
+  student.addAccessToken(accessToken)
   res.json(accessToken).status(200).end()
+}
+
+const logoutStudent = async (req, res) => {
+  const student = req.userInfo
+  const accessToken = req.accessToken
+  student.removeAccessToken(accessToken)
+  accessToken.destroy()
+  res.status(200).send('Logout successfuly').end()
 }
 
 const listEvent = async (req, res) => {
@@ -90,5 +98,6 @@ export default {
   listEvent,
   userInfo,
   enrollEvent,
-  cancelEvent
+  cancelEvent,
+  logoutStudent
 }

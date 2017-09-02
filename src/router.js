@@ -12,7 +12,8 @@ const routerDefine = {
   enrollStudentEvent: Controllers.Student.enrollEvent,
   cancelStudentEvent: Controllers.Student.cancelEvent,
   getEventInfo: Controllers.Event.getInfo,
-  getSlotRemain: Controllers.Other.getSlotRemain
+  getSlotRemain: Controllers.Other.getSlotRemain,
+  logoutStudent: Controllers.Student.logoutStudent
 }
 
 export default (app) => {

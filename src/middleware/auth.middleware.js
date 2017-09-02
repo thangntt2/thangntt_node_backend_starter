@@ -13,6 +13,7 @@ export default (app) => {
       const accessToken = await models.AccessToken.findOne({ where: { accessToken: req.headers['admin-api-key'] } })
       if (accessToken && accessToken.get('expiredTime') > Date.now()) {
         req.userInfo = await models.Admin.findOne({ where: { id: accessToken.get('adminId') } })
+        req.accessToken = accessToken
         return next()
       } else {
         res.status(401).end()
@@ -27,6 +28,7 @@ export default (app) => {
       if (accessToken && accessToken.get('expiredTime') > Date.now()) {
         const studentInfo = await models.Student.findOne({ where: { id: accessToken.get('studentId') } })
         req.userInfo = studentInfo
+        req.accessToken = accessToken
         return next()
       } else {
         res.status(401).end()
@@ -40,6 +42,7 @@ export default (app) => {
       const accessToken = await models.AccessToken.findOne({ where: { accessToken: req.headers['sponsor-api-key'] } })
       if (accessToken && accessToken.expiredTime > Date.now()) {
         req.userInfo = await models.Sponsor.findOne({ where: { id: accessToken.sponsorId } })
+        req.accessToken = accessToken
         return next()
       } else {
         res.status(401).end()
