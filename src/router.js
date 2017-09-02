@@ -20,7 +20,11 @@ const routerDefine = {
   getListStudentJoinEvent: Controllers.Event.getStudent,
   editEvent: Controllers.Event.editEvent,
   deleteEvent: Controllers.Event.deleteEvent,
-  cancelEvent: Controllers.Event.cancelEvent
+  cancelEvent: Controllers.Event.cancelEvent,
+  getSponsorInfo: Controllers.Sponsor.getInfoById,
+  getStudentInfo: Controllers.Student.getInfoById,
+  setStudentStatus: Controllers.Student.setStudentStatus,
+  getStudentByBarcode: Controllers.Student.getByBarcode
 }
 
 export default (app) => {

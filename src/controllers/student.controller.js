@@ -99,6 +99,24 @@ const cancelEvent = async (req, res) => {
   res.status(200).send('Successfull cancel event').end()
 }
 
+const getInfoById = async (req, res) => {
+  const student = await models.Student.findOne({ where: { id: req.pathParams.id } })
+  res.json(student).end()
+}
+
+const setStudentStatus = async (req, res) => {
+  const student = await models.Student.findOne({ where: { id: req.pathParams.id } })
+  await student.update({
+    status: req.body.status
+  })
+  res.json(student).end()
+}
+
+const getByBarcode = async (req, res) => {
+  const student = await models.Student.findOne({ where: { barcode: req.pathParams.barcode } })
+  res.json(student).status(200).end()
+}
+
 export default {
   fetchAll,
   newStudent,
@@ -107,5 +125,8 @@ export default {
   userInfo,
   enrollEvent,
   cancelEvent,
-  logoutStudent
+  logoutStudent,
+  getInfoById,
+  setStudentStatus,
+  getByBarcode
 }

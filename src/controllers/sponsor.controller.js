@@ -50,9 +50,15 @@ const listEvent = async (req, res) => {
   res.json(events).end()
 }
 
+const getInfoById = async (req, res) => {
+  const sponsor = await models.Sponsor.findOne({ where: { id: req.pathParams.id } })
+  res.json(sponsor).end()
+}
+
 export default {
   fetchAll,
   login,
   listEvent,
-  logoutSponsor
+  logoutSponsor,
+  getInfoById
 }

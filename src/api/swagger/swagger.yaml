@@ -122,21 +122,18 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/ResponseEvent"
-  /student/barcode:
+  /student/barcode/{barcode}:
     get:
       tags:
       - "Admin"
       summary: "Find student with given barcode and checkout"
+      operationId: "getStudentByBarcode"
       parameters:
-      - in: "body"
+      - in: "path"
         name: "barcode"
         description: "Student ID"
         required: true
-        schema:
-          type: "object"
-          properties:
-            barcode:
-              type: "string"
+        type: "string"
       responses:
         200:
           description: "Return student with given barcode"
@@ -311,6 +308,7 @@ paths:
       tags:
       - "Admin"
       summary: "Set status of student: member, under review, deactivate"
+      operationId: "setStudentStatus"
       parameters:
       - name: "id"
         in: "path"
@@ -322,11 +320,14 @@ paths:
         description: "Status will be assign to student"
         required: true
         schema:
-          type: "string"
-          enum:
-          - "member"
-          - "under_review"
-          - "deactivate"
+          type: "object"
+          properties:
+            status:
+              type: "string"
+              enum:
+              - "member"
+              - "under_review"
+              - "deactivate"
       responses:
         200:
           description: "Successful change student status"
@@ -339,6 +340,7 @@ paths:
       tags:
       - "Admin"
       summary: "Get student information"
+      operationId: "getStudentInfo"
       parameters:
       - name: "id"
         in: "path"
@@ -390,6 +392,7 @@ paths:
       tags:
       - "Admin"
       summary: "Get sponsor information"
+      operationId: "getSponsorInfo"
       parameters:
       - name: "id"
         in: "path"
