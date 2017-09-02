@@ -28,7 +28,7 @@ paths:
         name: "student"
         description: "Student information"
         schema:
-          $ref: "#/definitions/Student"
+          $ref: "#/definitions/SubmitStudent"
       responses:
         405:
           description: "Invalid information"
@@ -89,6 +89,12 @@ paths:
         description: "Offset of the return results"
         required: false
         type: "integer"
+      - name: "eventStatus"
+        in: "query"
+        description: "Filter the return events by status"
+        required: false
+        type: "string"
+        enum: ['draft', 'under_review', 'awaiting_hoding', 'held']
       security:
       - StudentSecurity: []
       responses:
@@ -101,12 +107,12 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Event"
+              $ref: "#/definitions/ResponseEvent"
   /student/{id}/barcode:
     get:
       tags:
       - "Admin"
-      summary: "Find student with given barcode"
+      summary: "Find student with given barcode and checkout"
       parameters:
       - in: "path"
         name: "id"
@@ -117,7 +123,7 @@ paths:
         200:
           description: "Return student with given barcode"
           schema:
-            $ref: "#/definitions/Student"
+            $ref: "#/definitions/ResponseStudent"
         404:
           description: "Not found any student with given barcode"
   /student/event/join:
@@ -194,7 +200,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Event"
+              $ref: "#/definitions/ResponseEvent"
     post:
       tags:
       - "Event"
@@ -205,7 +211,7 @@ paths:
         name: "event"
         description: "Event's information which sponsor want to create"
         schema:
-          $ref: "#/definitions/Event"
+          $ref: "#/definitions/SubmitEvent"
       security:
       - SponsorSecurity: []
       responses:
@@ -299,7 +305,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Student"
+              $ref: "#/definitions/ResponseStudent"
       security:
       - AdminSecurity: []
   /student/{id}/status:
@@ -347,7 +353,7 @@ paths:
         200:
           description: "Return student information with studentId"
           schema:
-            $ref: "#/definitions/Student"
+            $ref: "#/definitions/ResponseStudent"
       security:
       - AdminSecurity: []
   /sponsor:
@@ -378,7 +384,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/Sponsor"
+              $ref: '#/definitions/ResponseSponsor'
       security:
       - AdminSecurity: []
   /sponsor/{id}:
@@ -398,7 +404,7 @@ paths:
         200:
           description: "Return sponsor information with that ID"
           schema:
-            $ref: "#/definitions/Sponsor"
+            $ref: '#/definitions/ResponseSponsor'
       security:
       - AdminSecurity: []
   /event/{id}:
@@ -421,12 +427,93 @@ paths:
         200:
           description: "Return event information with that ID"
           schema:
-            $ref: "#/definitions/Event"
+            $ref: "#/definitions/ResponseEvent"
       security:
       - AdminSecurity: []
       - SponsorSecurity: []
       - StudentSecurity: []
-      
+    put:
+      tags:
+      - "Admin"
+      - "Sponsor"
+      summary: "Edit event information"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of event to edit"
+        required: true
+        type: "string"
+      - in: 'body'
+        name: 'event'
+        description: 'updated event'
+        schema:
+          $ref: '#/definitions/SubmitEvent'
+      responses:
+        404:
+          description: "Event with id not found or not created by this sponsor"
+        201:
+          description: "Successful edit event"
+      security: 
+      - AdminSecurity: []
+      - SponsorSecurity: []
+    delete:
+      tags:
+      - "Admin"
+      - "Sponsor"
+      summary: "Delete an event"
+      parameters: 
+      - name: "id"
+        in: "path"
+        description: "ID of event to delete"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Event with id not found or not created by this sponsor"
+        200:
+          description: "Successful delete event"
+      security: 
+      - AdminSecurity: []
+      - SponsorSecurity: []
+  /event/{id}/student:
+    get:
+      tags: 
+      - "Admin"
+      - "Sponsor"
+      - "Event"
+      summary: "Get list students who have joined the event"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of event to return"
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Event with id not found or not created by this sponsor"
+        200:
+          description: "List students who have joined the event"
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/ResponseStudent'
+      security: 
+      - AdminSecurity: []
+      - SponsorSecurity: []
+  /slotremain:
+    get:
+      tags:
+      - "Admin"
+      - "Student"
+      summary: "Get remaining slot in Blayncafe"
+      responses:
+        200:
+          description: "Number of remaining slot in Blayncafe"
+          schema:
+            type: 'integer'
+      security: 
+      - AdminSecurity: []
+      - StudentSecurity: []
 securityDefinitions:
   AdminSecurity:
     type: "apiKey"
@@ -441,12 +528,9 @@ securityDefinitions:
     name: "SPONSOR-API-KEY"
     in: "header"
 definitions:
-  Sponsor:
+  BaseSponsor:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       companyName:
         type: "string"
         maxLength: 255
@@ -470,12 +554,20 @@ definitions:
         type: "string"
       position:
         type: "string"
-  Student:
+  ResponseSponsor:
+    allOf:
+    - $ref: '#/definitions/BaseSponsor'
+    - type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+  SubmitSponsor:
+    allOf:
+    - $ref: '#/definitions/BaseSponsor'
+  BaseStudent:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
         maxLength: 255
@@ -502,12 +594,20 @@ definitions:
         format: "url"
       studentNumber:
         type: "string"
-  Event:
+  SubmitStudent:
+    allOf:
+    - $ref: '#/definitions/BaseStudent'
+  ResponseStudent:
+    allOf: 
+    - $ref: '#/definitions/BaseStudent'
+    - type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+  BaseEvent:
     type: "object"
     properties:
-      id:
-        type: "integer"
-        format: "int64"
       title:
         type: "string"
         maxLength: 1000
@@ -526,6 +626,17 @@ definitions:
         items:
           type: "string"
           format: "url"
+  SubmitEvent:
+    allOf: 
+    - $ref: '#/definitions/BaseEvent'
+  ResponseEvent:
+    allOf: 
+    - $ref: '#/definitions/BaseEvent'
+    - type: 'object'
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
   AccessToken:
     type: "object"
     properties:
