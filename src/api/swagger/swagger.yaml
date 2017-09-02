@@ -122,17 +122,21 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/ResponseEvent"
-  /student/{id}/barcode:
+  /student/barcode:
     get:
       tags:
       - "Admin"
       summary: "Find student with given barcode and checkout"
       parameters:
-      - in: "path"
-        name: "id"
+      - in: "body"
+        name: "barcode"
         description: "Student ID"
         required: true
-        type: "string"
+        schema:
+          type: "object"
+          properties:
+            barcode:
+              type: "string"
       responses:
         200:
           description: "Return student with given barcode"
@@ -239,28 +243,6 @@ paths:
           description: "Invalid access token"
         201:
           description: "Successful submiited new event"
-  /sponsor/event/cancel:
-    post:
-      tags:
-      - "Event"
-      - "Sponsor"
-      summary: "Cancel an event which sponsor created before"
-      parameters:
-      - in: "body"
-        name: "eventId"
-        description: "ID of the event which sponsor wants to cancel"
-        required: true
-        schema:
-          type: "string"
-      security:
-      - SponsorSecurity: []
-      responses:
-        405:
-          description: "Invalid event ID or enrollment cannot be cancel"
-        401:
-          description: "Invalidate access token"
-        200:
-          description: "Successful enrolled event"
   /sponsor/login:
     get:
       tags:
