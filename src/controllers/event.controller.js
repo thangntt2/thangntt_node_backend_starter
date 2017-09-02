@@ -11,7 +11,7 @@ const getInfo = async (req, res) => {
 }
 
 const newEventBySponsor = async (req, res) => {
-  const submitEvent = req.body.event
+  const submitEvent = req.body
   const sponsor = req.userInfo
   const event = await models.Event.create({
     ...submitEvent
@@ -30,7 +30,7 @@ const getStudent = async (req, res) => {
 
 const editEvent = async (req, res) => {
   const event = await models.Event.findOne({ where: { id: req.pathParams.id } })
-  const newEventInfo = req.body.event
+  const newEventInfo = req.body
   await event.update({
     ...newEventInfo
   })

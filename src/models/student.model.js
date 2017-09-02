@@ -46,6 +46,18 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    joinDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    deadline: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    remark: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     barcode: {
       type: DataTypes.STRING,
       unique: true,

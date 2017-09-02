@@ -230,10 +230,7 @@ paths:
         name: "event"
         description: "Event's information which sponsor want to create"
         schema:
-          type: "object"
-          properties:
-            event:
-              $ref: "#/definitions/SubmitEvent"
+          $ref: "#/definitions/SubmitEvent"
       security:
       - SponsorSecurity: []
       responses:
@@ -450,10 +447,7 @@ paths:
         name: 'event'
         description: 'updated event'
         schema:
-          type: "object"
-          properties:
-            event:
-              $ref: "#/definitions/SubmitEvent"
+          $ref: "#/definitions/SubmitEvent"
       responses:
         404:
           description: "Event with id not found or not created by this sponsor"
@@ -608,16 +602,22 @@ definitions:
   BaseStudent:
     type: "object"
     properties:
-      name:
+      familyName:
+        type: "string"
+        maxLength: 255
+      giveName:
         type: "string"
         maxLength: 255
       email:
         type: "string"
         format: "email"
       admissionYear:
-        type: "string"
+        type: "integer"
         minimum: 2010
         maximum: 2050
+      sex:
+        type: "string"
+        enum: ["male", "female", "other"]
       department:
         type: "string"
       dateOfBirth:
@@ -633,6 +633,8 @@ definitions:
         type: "string"
         format: "url"
       studentNumber:
+        type: "string"
+      remark:
         type: "string"
   SubmitStudent:
     allOf:

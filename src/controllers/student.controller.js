@@ -9,9 +9,14 @@ const fetchAll = async (req, res) => {
   res.send(students).status(200).end()
 }
 
+const time2day = time =>
+  `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
+
 const newStudent = async (req, res) => {
+  console.log(time2day(new Date()))
   const student = await models.Student.create({
-    name: req.body.name,
+    familyName: req.body.familyName,
+    giveName: req.body.giveName,
     email: req.body.email,
     admissionYear: req.body.admissionYear,
     department: req.body.department,
@@ -21,6 +26,9 @@ const newStudent = async (req, res) => {
     studentCard: req.body.studentCard,
     image: req.body.image,
     studentNumber: req.body.studentNumber,
+    joinDate: time2day(new Date()),
+    deadline: time2day(new Date()),
+    remark: req.body.remark,
     barcode: '123456789',
     status: 'under_review'
   })
