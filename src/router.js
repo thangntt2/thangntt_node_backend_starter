@@ -13,7 +13,14 @@ const routerDefine = {
   cancelStudentEvent: Controllers.Student.cancelEvent,
   getEventInfo: Controllers.Event.getInfo,
   getSlotRemain: Controllers.Other.getSlotRemain,
-  logoutStudent: Controllers.Student.logoutStudent
+  logoutStudent: Controllers.Student.logoutStudent,
+  sponsorListEvent: Controllers.Sponsor.listEvent,
+  createNewEventBySponsor: Controllers.Event.newEventBySponsor,
+  logoutSponsor: Controllers.Sponsor.logoutSponsor,
+  getListStudentJoinEvent: Controllers.Event.getStudent,
+  editEvent: Controllers.Event.editEvent,
+  deleteEvent: Controllers.Event.deleteEvent,
+  cancelEvent: Controllers.Event.cancelEvent
 }
 
 export default (app) => {

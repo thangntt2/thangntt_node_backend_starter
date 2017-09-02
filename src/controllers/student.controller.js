@@ -10,7 +10,7 @@ const fetchAll = async (req, res) => {
 }
 
 const newStudent = async (req, res) => {
-  await models.Student.create({
+  const student = await models.Student.create({
     name: req.body.name,
     email: req.body.email,
     admissionYear: req.body.admissionYear,
@@ -24,7 +24,7 @@ const newStudent = async (req, res) => {
     barcode: '123456789',
     status: 'under_review'
   })
-  res.status(201).end()
+  res.status(201).json(student).end()
 }
 
 const loginStudent = async (req, res) => {

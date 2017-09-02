@@ -10,7 +10,7 @@ const fetchAll = async (req, res) => {
 const login = async (req, res) => {
   const email = req.query.username
   const password = req.query.password
-  const sponsor = await models.Sponsor.findOne({
+  const sponsor = await models.sponsor.findOne({
     where: {
       email: email
     }
@@ -28,15 +28,31 @@ const login = async (req, res) => {
   const accessToken = await models.AccessToken.create({
     accessToken: uuidv4(),
     expiredTime: Date.now() + 6 * 3600 * 1000,
-    userType: 'sponsor',
-    sponsorId: sponsor.id
+    userType: 'sponsor'
   }, {
     include: [models.Sponsor]
   })
+  sponsor.addAccessToken(accessToken)
   res.json(accessToken).status(200).end()
+}
+
+const logoutSponsor = async (req, res) => {
+  const sponsor = req.userInfo
+  const accessToken = req.accessToken
+  sponsor.removeAccessToken(accessToken)
+  accessToken.destroy()
+  res.status(200).send('Logout successfuly').end()
+}
+
+const listEvent = async (req, res) => {
+  const sponsor = req.userInfo
+  const events = await sponsor.getEvents()
+  res.json(events).end()
 }
 
 export default {
   fetchAll,
-  login
+  login,
+  listEvent,
+  logoutSponsor
 }

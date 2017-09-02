@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     },
     startingTime: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: false
     },
     recruitmentNumbers: {

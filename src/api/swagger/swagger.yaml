@@ -148,12 +148,11 @@ paths:
       summary: "Enroll student to an event"
       operationId: "enrollStudentEvent"
       parameters:
-      - in: "query"
-        name: "eventId"
+      - name: "eventId"
+        in: "query"
         description: "ID of the event which student wants to join"
         required: true
-        schema:
-          type: "string"
+        type: "string"
       responses:
         405:
           description: "Invalid event ID"
@@ -163,29 +162,28 @@ paths:
           description: "Successful enrolled event"
       security:
       - StudentSecurity: []
-  /student/event/cancel:
+  /sponsor/event/{eventId}/cancel:
     post:
       tags:
       - "Event"
-      - "Student"
-      summary: "Cancel an event which student enrolled before"
-      operationId: "cancelStudentEvent"
+      - "Sponsor"
+      summary: "Cancel an event which sponsor created before"
+      operationId: "cancelEvent"
       parameters:
-      - in: "query"
-        name: "eventId"
-        description: "ID of the event which student wants to join"
+      - name: "eventId"
+        in: "path"
+        description: "ID of the event which sponsor wants to cancel"
         required: true
-        schema:
-          type: "string"
+        type: "string"
       security:
-      - StudentSecurity: []
+      - SponsorSecurity: []
       responses:
         405:
           description: "Invalid event ID or enrollment cannot be cancel"
         401:
           description: "Invalidate access token"
         200:
-          description: "Successful cancel event"
+          description: "Successful enrolled event"
   /sponsor/event:
     get:
       tags:
@@ -222,12 +220,16 @@ paths:
       - "Event"
       - "Sponsor"
       summary: "Submit an event"
+      operationId: "createNewEventBySponsor"
       parameters:
       - in: "body"
         name: "event"
         description: "Event's information which sponsor want to create"
         schema:
-          $ref: "#/definitions/SubmitEvent"
+          type: "object"
+          properties:
+            event:
+              $ref: "#/definitions/SubmitEvent"
       security:
       - SponsorSecurity: []
       responses:
@@ -287,6 +289,7 @@ paths:
     get:
       tags:
       - "Sponsor"
+      operationId: "logoutSponsor"
       summary: "Sponsor logout"
       security:
       - SponsorSecurity: []
@@ -454,6 +457,7 @@ paths:
       - "Admin"
       - "Sponsor"
       summary: "Edit event information"
+      operationId: "editEvent"
       parameters:
       - name: "id"
         in: "path"
@@ -464,7 +468,10 @@ paths:
         name: 'event'
         description: 'updated event'
         schema:
-          $ref: '#/definitions/SubmitEvent'
+          type: "object"
+          properties:
+            event:
+              $ref: "#/definitions/SubmitEvent"
       responses:
         404:
           description: "Event with id not found or not created by this sponsor"
@@ -478,6 +485,7 @@ paths:
       - "Admin"
       - "Sponsor"
       summary: "Delete an event"
+      operationId: "deleteEvent"
       parameters: 
       - name: "id"
         in: "path"
@@ -499,6 +507,7 @@ paths:
       - "Sponsor"
       - "Event"
       summary: "Get list students who have joined the event"
+      operationId: "getListStudentJoinEvent"
       parameters:
       - name: "id"
         in: "path"
@@ -657,13 +666,13 @@ definitions:
   BaseEvent:
     type: "object"
     properties:
-      title:
+      eventTitle:
         type: "string"
         maxLength: 1000
       date:
         type: "string"
         format: "date"
-      time:
+      startingTime:
         type: "string"
         format: "date-time"
       recruitmentNumbers:
@@ -671,10 +680,13 @@ definitions:
         maximum: 5
         minimum: 1
       images:
-        type: "array"
-        items:
-          type: "string"
-          format: "url"
+        type: "string"
+        format: "url"
+      status:
+        type: "string"
+        enum: ['draft','under_review','approved','held']
+      description:
+        type: "string"
   SubmitEvent:
     allOf: 
     - $ref: '#/definitions/BaseEvent'
@@ -684,6 +696,9 @@ definitions:
     - type: 'object'
       properties:
         id:
+          type: "integer"
+          format: "int64"
+        sponsorId:
           type: "integer"
           format: "int64"
   AccessToken:
