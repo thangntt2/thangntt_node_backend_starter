@@ -62,9 +62,33 @@ const listEvent = async (req, res) => {
   res.json(events).status(200).end()
 }
 
+const userInfo = async (req, res) => {
+  res.json(req.userInfo).status(200).end()
+}
+
+const enrollEvent = async (req, res) => {
+  // req.query.eventId
+  const event = await models.Event.findOne({ where: { id: req.query.eventId } })
+  const student = req.userInfo
+  await student.addEvent(event)
+  await event.addStudent(student)
+  res.status(200).send('Successful enroll to event').end()
+}
+
+const cancelEvent = async (req, res) => {
+  const event = await models.Event.findOne({ where: { id: req.query.eventId } })
+  const student = req.userInfo
+  await student.removeEvent(event)
+  await event.removeStudent(student)
+  res.status(200).send('Successfull cancel event').end()
+}
+
 export default {
   fetchAll,
   newStudent,
   loginStudent,
-  listEvent
+  listEvent,
+  userInfo,
+  enrollEvent,
+  cancelEvent
 }

@@ -71,6 +71,19 @@ paths:
       responses:
         200:
           description: "Logout successful"
+  /student/info:
+    get:
+      tags:
+      - "Student"
+      summary: "Get current student information"
+      security: 
+      - StudentSecurity: []
+      operationId: "studentUserInfo"
+      responses:
+        200:
+          description: "Student information"
+          schema:
+            $ref: '#/definitions/ResponseStudent'
   /student/event:
     get:
       tags:
@@ -132,8 +145,9 @@ paths:
       - "Event"
       - "Student"
       summary: "Enroll student to an event"
+      operationId: "enrollStudentEvent"
       parameters:
-      - in: "body"
+      - in: "query"
         name: "eventId"
         description: "ID of the event which student wants to join"
         required: true
@@ -154,8 +168,9 @@ paths:
       - "Event"
       - "Student"
       summary: "Cancel an event which student enrolled before"
+      operationId: "cancelStudentEvent"
       parameters:
-      - in: "body"
+      - in: "query"
         name: "eventId"
         description: "ID of the event which student wants to join"
         required: true
@@ -169,7 +184,7 @@ paths:
         401:
           description: "Invalidate access token"
         200:
-          description: "Successful enrolled event"
+          description: "Successful cancel event"
   /sponsor/event:
     get:
       tags:
@@ -415,6 +430,7 @@ paths:
       - "Sponsor"
       - "Event"
       summary: "Get event information"
+      operationId: "getEventInfo"
       parameters:
       - name: "id"
         in: "path"
@@ -505,6 +521,7 @@ paths:
       tags:
       - "Admin"
       - "Student"
+      operationId: "getSlotRemain"
       summary: "Get remaining slot in Blayncafe"
       responses:
         200:
@@ -514,6 +531,37 @@ paths:
       security: 
       - AdminSecurity: []
       - StudentSecurity: []
+  /event:
+    get:
+      tags:
+      - "Admin"
+      - "Student"
+      - "Sponsor"
+      summary: "Get all events"
+      operationId: "listAllEvents"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "Limit the number of return results"
+        required: false
+        type: "integer"
+      - name: "offset"
+        in: "query"
+        description: "Offset of the return results"
+        required: false
+        type: "integer"
+      security: 
+      - AdminSecurity: []
+      - StudentSecurity: []
+      - SponsorSecurity: []
+      responses:
+        200:
+          description: "Return all event"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/ResponseEvent'
+        
 securityDefinitions:
   AdminSecurity:
     type: "apiKey"

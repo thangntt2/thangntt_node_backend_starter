@@ -6,7 +6,13 @@ const routerDefine = {
   newStudent: Controllers.Student.newStudent,
   loginStudent: Controllers.Student.loginStudent,
   loginSponsor: Controllers.Sponsor.login,
-  studentListEvent: Controllers.Student.listEvent
+  studentListEvent: Controllers.Student.listEvent,
+  listAllEvents: Controllers.Event.fetchAll,
+  studentUserInfo: Controllers.Student.userInfo,
+  enrollStudentEvent: Controllers.Student.enrollEvent,
+  cancelStudentEvent: Controllers.Student.cancelEvent,
+  getEventInfo: Controllers.Event.getInfo,
+  getSlotRemain: Controllers.Other.getSlotRemain
 }
 
 export default (app) => {
