@@ -18,7 +18,6 @@ export default (app) => {
       const accessToken = await models.AccessToken.findOne({ where: { accessToken: req.headers['student-api-key'] } })
       if (accessToken && accessToken.get('expiredTime') > Date.now()) {
         const studentInfo = await models.Student.findOne({ where: { id: accessToken.get('studentId') } })
-        console.log(studentInfo)
         req.userInfo = studentInfo
         return next()
       } else {

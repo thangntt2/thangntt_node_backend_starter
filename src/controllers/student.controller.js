@@ -57,9 +57,9 @@ const loginStudent = async (req, res) => {
 }
 
 const listEvent = async (req, res) => {
-  console.log('wtf')
-  console.log(req.userInfo.id)
-  res.json([])
+  const studentInfo = req.userInfo
+  const events = await studentInfo.getEvents()
+  res.json(events).status(200).end()
 }
 
 export default {
