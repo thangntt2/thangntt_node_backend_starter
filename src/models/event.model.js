@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
       allowNull: false
     },
     images: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     status: {
       type: DataTypes.ENUM('draft', 'under_review', 'awaitings_holding', 'held'),
@@ -26,15 +26,15 @@ export default (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
       allowNull: false
-    },
+    }
   })
 
   Event.associate = (models) => {
-    Event.belongsToMany(models.Student, 
+    Event.belongsToMany(models.Student,
       {
         through: 'StudentEvents',
-        foreignKey: 'eventId', 
-        constraints: true, 
+        foreignKey: 'eventId',
+        constraints: true,
         onDelete: 'cascade'
       }
     )

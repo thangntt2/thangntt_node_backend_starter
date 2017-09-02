@@ -242,6 +242,7 @@ paths:
       tags:
       - "Sponsor"
       summary: "Sponsor login"
+      operationId: "loginSponsor"
       parameters:
       - name: "username"
         in: "query"

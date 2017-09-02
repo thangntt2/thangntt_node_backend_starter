@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   var Sponsor = sequelize.define('Sponsor', {
     companyName: {
-      type: DataTypes.STRING, //unique luôn cái này
+      type: DataTypes.STRING,
       allowNull: false
     },
     staffName: {
@@ -12,7 +12,15 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    companyAddress: {
+    companyAddress1: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    companyAddress2: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    companyAddress3: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -61,26 +69,26 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-   	introduction1: {
+    introduction1: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-   	introduction2: {
+    introduction2: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-   	contactStartDate: {
+    contactStartDate: {
       type: DataTypes.DATEONLY,
       allowNull: false
     },
-   	contactDeadline: {
+    contactDeadline: {
       type: DataTypes.STRING,
       allowNull: false
-    },
+    }
   })
 
   Sponsor.associate = (models) => {
-    Sponsor.hasMany(models.Event, 
+    Sponsor.hasMany(models.Event,
       {
         foreignKey: 'sponsorId',
         constraints: true,

@@ -1,5 +1,8 @@
+import uuidv4 from 'uuid/v4'
+import bcrypt from 'bcrypt'
 import models from '../models'
-const uuidv4 = require('uuid/v4')
+
+const saltRounds = 10
 
 const fetchAll = async (req, res) => {
   const students = await models.Student.findAll({})
@@ -8,47 +11,60 @@ const fetchAll = async (req, res) => {
 
 const newStudent = async (req, res) => {
   await models.Student.create({
-    firstName: "vu",
-    lastName: "cuong",
+    name: req.body.name,
     email: req.body.email,
     admissionYear: req.body.admissionYear,
     department: req.body.department,
     dateOfBirth: req.body.dateOfBirth,
-    sex: "male",
-    password: req.body.password,
+    sex: req.body.sex,
+    password: await bcrypt.hash(req.body.password, saltRounds),
     studentCard: req.body.studentCard,
     image: req.body.image,
     studentNumber: req.body.studentNumber,
-    barcode: "123456789",
-    status: "member",
+    barcode: '123456789',
+    status: 'under_review'
   })
   res.status(201).end()
 }
 
 const loginStudent = async (req, res) => {
-  var email = req.query.username
-  var password = req.query.password
-   await models.Student.findOne({
+  const email = req.query.username
+  const password = req.query.password
+  const student = await models.Student.findOne({
     where: {
-      email: email,
-      password: password
+      email: email
     }
-  }).then(user => {
-      if(!user){
-        res.status(404).end()
-      }
+  })
+  if (!student) {
+    res.status(404).end()
+    return
+  }
 
-      const access = models.AccessToken.create({
-        accessToken: uuidv4(),
-        expiredTime: Date.now() + 6 * 3600 *1000,
-        userType: "student",
-        studentId: user.id,
-      })
-      res.send("ok").status(200).end()
-    })
+  const isMatch = await bcrypt.compare(password, student.password)
+  if (!isMatch) {
+    res.status(401).end()
+  }
+
+  const accessToken = await models.AccessToken.create({
+    accessToken: uuidv4(),
+    expiredTime: Date.now() + 6 * 3600 * 1000,
+    userType: 'student',
+    studentId: student.id
+  }, {
+    include: [models.Student]
+  })
+  res.json(accessToken).status(200).end()
 }
+
+const listEvent = async (req, res) => {
+  console.log('wtf')
+  console.log(req.userInfo.id)
+  res.json([])
+}
+
 export default {
   fetchAll,
   newStudent,
-  loginStudent
+  loginStudent,
+  listEvent
 }

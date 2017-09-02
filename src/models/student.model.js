@@ -1,10 +1,10 @@
 export default (sequelize, DataTypes) => {
   var Student = sequelize.define('Student', {
-    firstName: {
+    familyName: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    lastName: {
+    giveName: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -38,7 +38,7 @@ export default (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    image: {
+    profileImage: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -54,14 +54,14 @@ export default (sequelize, DataTypes) => {
     status: {
       type: DataTypes.ENUM('member', 'under_review', 'deactivated'),
       allowNull: false
-    },
+    }
   })
 
   Student.associate = (models) => {
-    Student.belongsToMany(models.Event, 
+    Student.belongsToMany(models.Event,
       {
         through: 'StudentEvents',
-        foreignKey: 'studentId', 
+        foreignKey: 'studentId',
         constraints: true,
         onDelete: 'cascade'
       }

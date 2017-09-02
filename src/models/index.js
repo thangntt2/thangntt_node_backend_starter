@@ -23,7 +23,7 @@ const modules = [
   BnCEvent,
   Sponsor,
   StudentEvents,
-  Admin,
+  Admin
 ]
 
 // Initialize models

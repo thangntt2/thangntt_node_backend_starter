@@ -5,6 +5,8 @@ const routerDefine = {
   sponsorList: Controllers.Sponsor.fetchAll,
   newStudent: Controllers.Student.newStudent,
   loginStudent: Controllers.Student.loginStudent,
+  loginSponsor: Controllers.Sponsor.login,
+  studentListEvent: Controllers.Student.listEvent
 }
 
 export default (app) => {
