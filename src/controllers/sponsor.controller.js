@@ -12,7 +12,7 @@ const login = async (req, res) => {
   const password = req.query.password
   let sponsor = null
   try {
-    sponsor = await models.sponsor.findOne({
+    sponsor = await models.Sponsor.findOne({
       where: {
         email: email
       }
