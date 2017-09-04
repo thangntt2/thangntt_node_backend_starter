@@ -18,13 +18,13 @@ const login = async (req, res) => {
       }
     })
   } catch (e) {
-    res.status(404).end()
+    res.status(401).send('bad email or password').end()
     return
   }
 
   const isMatch = await bcrypt.compare(password, sponsor.password)
   if (!isMatch) {
-    res.status(401).end()
+    res.status(401).send('bad email or password').end()
     return
   }
 
