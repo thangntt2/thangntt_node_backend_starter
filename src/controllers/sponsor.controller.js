@@ -10,12 +10,14 @@ const fetchAll = async (req, res) => {
 const login = async (req, res) => {
   const email = req.query.username
   const password = req.query.password
-  const sponsor = await models.sponsor.findOne({
-    where: {
-      email: email
-    }
-  })
-  if (!sponsor) {
+  let sponsor = null
+  try {
+    sponsor = await models.sponsor.findOne({
+      where: {
+        email: email
+      }
+    })
+  } catch (e) {
     res.status(404).end()
     return
   }
@@ -23,6 +25,7 @@ const login = async (req, res) => {
   const isMatch = await bcrypt.compare(password, sponsor.password)
   if (!isMatch) {
     res.status(401).end()
+    return
   }
 
   const accessToken = await models.AccessToken.create({
