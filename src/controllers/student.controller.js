@@ -12,6 +12,12 @@ const fetchAll = async (req, res) => {
 const time2day = time =>
   `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
 
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min)) + min // The maximum is exclusive and the minimum is inclusive
+}
+
 const newStudent = async (req, res) => {
   console.log(time2day(new Date()))
   const student = await models.Student.create({
@@ -29,7 +35,7 @@ const newStudent = async (req, res) => {
     joinDate: time2day(new Date()),
     deadline: time2day(new Date()),
     remark: req.body.remark,
-    barcode: '123456789',
+    barcode: getRandomInt(1000000000000, 1999999999999),
     status: 'under_review'
   })
   res.status(201).json(student).end()
