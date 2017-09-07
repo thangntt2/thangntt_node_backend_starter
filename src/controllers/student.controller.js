@@ -18,8 +18,24 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min // The maximum is exclusive and the minimum is inclusive
 }
 
+const editStudentUserInfo = async (req, res) => {
+  const studentInfo = req.userInfo
+  await studentInfo.update({
+    ...req.body
+  })
+  res.status(200).json(studentInfo).end()
+}
+
+const editStudentInfo = async (req, res) => {
+  const { id } = req.pathParams
+  const studentInfo = await models.Student.findOne({ where: { id } })
+  await studentInfo.update({
+    ...req.body
+  })
+  res.status(200).json(studentInfo).end()
+}
+
 const newStudent = async (req, res) => {
-  console.log(time2day(new Date()))
   const student = await models.Student.create({
     familyName: req.body.familyName,
     giveName: req.body.giveName,
@@ -134,5 +150,7 @@ export default {
   logoutStudent,
   getInfoById,
   setStudentStatus,
-  getByBarcode
+  getByBarcode,
+  editStudentInfo,
+  editStudentUserInfo
 }

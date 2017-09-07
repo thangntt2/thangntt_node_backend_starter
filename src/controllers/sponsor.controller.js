@@ -58,10 +58,34 @@ const getInfoById = async (req, res) => {
   res.json(sponsor).end()
 }
 
+const getSponsorUserInfo = async (req, res) => {
+  const sponsor = req.userInfo
+  res.json(sponsor).end()
+}
+
+const editSponsorUserInfo = async (req, res) => {
+  const sponsor = req.userInfo
+  await sponsor.update({
+    ...req.body
+  })
+  res.json(sponsor).end()
+}
+
+const editSponsorInfo = async (req, res) => {
+  const sponsorInfo = await models.Sponsor.findOne({ where: { id: req.pathParams.id } })
+  await sponsorInfo.update({
+    ...req.body
+  })
+  res.json(sponsorInfo).end()
+}
+
 export default {
   fetchAll,
   login,
   listEvent,
   logoutSponsor,
-  getInfoById
+  getInfoById,
+  getSponsorUserInfo,
+  editSponsorInfo,
+  editSponsorUserInfo
 }

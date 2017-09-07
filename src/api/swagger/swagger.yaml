@@ -85,6 +85,25 @@ paths:
           description: "Student information"
           schema:
             $ref: '#/definitions/ResponseStudent'
+    post:
+      tags:
+      - "Student"
+      summary: "Edit student profile"
+      security: 
+      - StudentSecurity: []
+      operationId: "editStudentUserInfo"
+      parameters: 
+      - in: "body"
+        name: "student"
+        description: "Student's new information"
+        schema:
+          $ref: "#/definitions/SubmitStudent"
+      responses:
+        200:
+          description: "Successful edit student profile"
+          schema:
+            $ref: '#/definitions/ResponseStudent'
+        
   /student/event:
     get:
       tags:
@@ -261,6 +280,37 @@ paths:
           description: "Login successful"
           schema:
             $ref: "#/definitions/AccessToken"
+  /sponsor/info:
+    get:
+      tags:
+      - "Sponsor"
+      summary: "Get current sponsor information"
+      security: 
+      - StudentSecurity: []
+      operationId: "sponsorUserInfo"
+      responses:
+        200:
+          description: "Sponsor information"
+          schema:
+            $ref: '#/definitions/ResponseSponsor'
+    post:
+      tags:
+      - "Sponsor"
+      summary: "Edit sponsor profile"
+      security: 
+      - StudentSecurity: []
+      operationId: "editSponsorUserInfo"
+      parameters: 
+      - in: "body"
+        name: "sponsor"
+        description: "Sponsor's new information"
+        schema:
+          $ref: "#/definitions/SubmitSponsor"
+      responses:
+        200:
+          description: "Successful edit sponsor profile"
+          schema:
+            $ref: '#/definitions/ResponseSponsor'
   /sponsor/logout:
     get:
       tags:
@@ -356,12 +406,34 @@ paths:
             $ref: "#/definitions/ResponseStudent"
       security:
       - AdminSecurity: []
+    post:
+      tags:
+      - "Admin"
+      summary: "Edit student profile"
+      security: 
+      - StudentSecurity: []
+      operationId: "editStudentInfo"
+      parameters: 
+      - in: "body"
+        name: "student"
+        description: "Student's new information"
+        schema:
+          $ref: "#/definitions/SubmitStudent"
+      - name: "id"
+        in: "path"
+        description: "ID of student to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful edit student profile"
+          schema:
+            $ref: '#/definitions/ResponseStudent'
   /sponsor:
     get:
       tags:
       - "Admin"
       summary: "View list sponsor"
-      description: ""
       operationId: "sponsorList"
       parameters:
       - name: "limit"
@@ -408,6 +480,29 @@ paths:
             $ref: '#/definitions/ResponseSponsor'
       security:
       - AdminSecurity: []
+    post:
+      tags:
+      - "Admin"
+      summary: "Edit sponsor profile"
+      security: 
+      - StudentSecurity: []
+      operationId: "editSponsorInfo"
+      parameters: 
+      - in: "body"
+        name: "sponsor"
+        description: "Sponsor's new information"
+        schema:
+          $ref: "#/definitions/SubmitSponsor"
+      - name: "id"
+        in: "path"
+        description: "ID of sponsor to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful edit sponsor profile"
+          schema:
+            $ref: '#/definitions/ResponseSponsor'
   /event/{id}:
     get:
       tags:
@@ -632,7 +727,7 @@ definitions:
       studentCard:
         type: "string"
         format: "url"
-      image:
+      profileImage:
         type: "string"
         format: "url"
       studentNumber:
