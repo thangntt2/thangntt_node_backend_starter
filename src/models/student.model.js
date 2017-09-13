@@ -13,6 +13,14 @@ export default (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
+    phoneNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     admissionYear: {
       type: DataTypes.INTEGER,
       allowNull: false

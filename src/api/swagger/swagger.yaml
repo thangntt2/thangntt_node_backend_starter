@@ -709,6 +709,10 @@ definitions:
       email:
         type: "string"
         format: "email"
+      phoneNumber:
+        type: "string"
+      address:
+        type: "string"
       admissionYear:
         type: "integer"
         minimum: 2010
