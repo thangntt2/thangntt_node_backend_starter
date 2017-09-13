@@ -66,13 +66,13 @@ const loginStudent = async (req, res) => {
     }
   })
   if (!student) {
-    res.status(404).end()
+    res.status(401).send('Invalidate student email or password').end()
     return
   }
 
   const isMatch = await bcrypt.compare(password, student.password)
   if (!isMatch) {
-    res.status(401).end()
+    res.status(401).send('Invalidate student email or password').end()
   }
 
   const accessToken = await models.AccessToken.create({
@@ -109,7 +109,7 @@ const enrollEvent = async (req, res) => {
   const event = await models.Event.findOne({ where: { id: req.query.eventId } })
   const student = req.userInfo
   await student.addEvent(event)
-  await event.addStudent(student)
+  // await event.addStudent(student)
   res.status(200).send('Successful enroll to event').end()
 }
 
