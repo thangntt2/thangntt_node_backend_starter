@@ -182,6 +182,28 @@ paths:
           description: "Successful enrolled event"
       security:
       - StudentSecurity: []
+  /student/event/cancel:
+    post:
+      tags:
+      - "Event"
+      - "Student"
+      summary: "Cancel an joined event"
+      operationId: "cancelStudentEvent"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "ID of the event which student wants to cancel"
+        required: true
+        type: "string"
+      responses:
+        405:
+          description: "Invalid event ID"
+        401:
+          description: "Invalidate access token"
+        200:
+          description: "Successful enrolled event"
+      security:
+      - StudentSecurity: []
   /sponsor/event/{eventId}/cancel:
     post:
       tags:
