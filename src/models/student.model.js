@@ -92,6 +92,12 @@ export default (sequelize, DataTypes) => {
         constraints: true,
         onDelete: 'cascade'
       })
+    Student.hasMany(models.StudentLog,
+      {
+        foreignKey: 'studentId',
+        constraints: true,
+        onDelete: 'cascade'
+      })
   }
 
   return Student

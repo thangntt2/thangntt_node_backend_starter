@@ -1,5 +1,6 @@
 import uuidv4 from 'uuid/v4'
 import bcrypt from 'bcrypt'
+import moment from 'moment'
 import models from '../models'
 
 const saltRounds = 10
@@ -139,6 +140,25 @@ const getByBarcode = async (req, res) => {
   res.json(student).status(200).end()
 }
 
+const checkoutByBarcode = async (req, res) => {
+  const student = await models.Student.findOne({ where: { barcode: req.query.barcode } })
+  if (!student) {
+    res.status(404).send('Cannot find student with given barcode').end()
+  }
+  const log = await models.StudentLog.create({
+    date: moment().format('YYYY-MM-DD'),
+    time: moment().format()
+  })
+  await student.addStudentLog(log)
+  res.json(log).status(200).end()
+}
+
+const getStudentLogs = async (req, res) => {
+  const student = req.userInfo
+  const logs = await student.getStudentLogs()
+  res.json({ logs, score: logs.length }).end()
+}
+
 export default {
   fetchAll,
   newStudent,
@@ -152,5 +172,7 @@ export default {
   setStudentStatus,
   getByBarcode,
   editStudentInfo,
-  editStudentUserInfo
+  editStudentUserInfo,
+  getStudentLogs,
+  checkoutByBarcode
 }

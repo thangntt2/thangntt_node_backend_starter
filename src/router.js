@@ -29,7 +29,9 @@ const routerDefine = {
   editStudentInfo: Controllers.Student.editStudentInfo,
   editSponsorInfo: Controllers.Sponsor.editSponsorInfo,
   editSponsorUserInfo: Controllers.Sponsor.editSponsorUserInfo,
-  sponsorUserInfo: Controllers.Sponsor.getSponsorUserInfo
+  sponsorUserInfo: Controllers.Sponsor.getSponsorUserInfo,
+  studentUserLogs: Controllers.Student.getStudentLogs,
+  checkoutByBarcode: Controllers.Student.checkoutByBarcode
 }
 
 export default (app) => {

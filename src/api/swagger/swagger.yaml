@@ -72,6 +72,19 @@ paths:
       responses:
         200:
           description: "Logout successful"
+  /student/logs:
+    get:
+      tags:
+      - "Student"
+      summary: "Get student visiting history"
+      security:
+      - StudentSecurity: []
+      operationId: "studentUserLogs"
+      responses:
+        200:
+          description: "Student visiting logs"
+          schema:
+            $ref: '#/definitions/ResponseStudentLog'
   /student/info:
     get:
       tags:
@@ -145,12 +158,14 @@ paths:
     get:
       tags:
       - "Admin"
-      summary: "Find student with given barcode and checkout"
+      security:
+      - AdminSecurity: []
+      summary: "Find student with given barcode"
       operationId: "getStudentByBarcode"
       parameters:
       - in: "path"
         name: "barcode"
-        description: "Student ID"
+        description: "Barcode number"
         required: true
         type: "string"
       responses:
@@ -158,6 +173,27 @@ paths:
           description: "Return student with given barcode"
           schema:
             $ref: "#/definitions/ResponseStudent"
+        404:
+          description: "Not found any student with given barcode"
+  /student/checkout:
+    get:
+      tags:
+      - "Admin"
+      summary: "Checkout student by barcode"
+      operationId: "checkoutByBarcode"
+      security:
+      - AdminSecurity: []
+      parameters:
+      - in: "query"
+        name: "barcode"
+        description: "Barcode number"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Return student with given barcode"
+          schema:
+            $ref: "#/definitions/ResponseBaseStudentLog"
         404:
           description: "Not found any student with given barcode"
   /student/event/join:
@@ -656,10 +692,6 @@ paths:
         description: "Offset of the return results"
         required: false
         type: "integer"
-      security: 
-      - AdminSecurity: []
-      - StudentSecurity: []
-      - SponsorSecurity: []
       responses:
         200:
           description: "Return all event"
@@ -823,3 +855,32 @@ definitions:
       expireTime:
         type: "integer"
         format: "int64"
+  BaseStudentLog:
+    type: "object"
+    properties:
+      date:
+        type: "string"
+        format: "date"
+      time:
+        type: "string"
+        format: "date-time"
+      studentId:
+        type: "integer"
+        format: "int64"
+  ResponseBaseStudentLog:
+    allOf: 
+    - $ref: '#/definitions/BaseStudentLog'
+    - type: 'object'
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+  ResponseStudentLog:
+    type: "object"
+    properties:
+      logs:
+        type: "array"
+        items:
+          $ref: '#/definitions/ResponseBaseStudentLog'
+      score:
+        type: "integer"
