@@ -12,6 +12,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false
     },
+    endTime: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
     recruitmentNumbers: {
       type: DataTypes.INTEGER,
       allowNull: false

@@ -783,6 +783,9 @@ definitions:
       startingTime:
         type: "string"
         format: "date-time"
+      endTime:
+        type: "string"
+        format: "date-time"
       recruitmentNumbers:
         type: "integer"
         maximum: 5
