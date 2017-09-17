@@ -11,13 +11,12 @@ const login = async (req, res) => {
   const email = req.query.username
   const password = req.query.password
   let sponsor = null
-  try {
-    sponsor = await models.Sponsor.findOne({
-      where: {
-        email: email
-      }
-    })
-  } catch (e) {
+  sponsor = await models.Sponsor.findOne({
+    where: {
+      email: email
+    }
+  })
+  if (!sponsor) {
     res.status(401).send('bad email or password').end()
     return
   }
