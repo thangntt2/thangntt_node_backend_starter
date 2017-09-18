@@ -685,6 +685,8 @@ paths:
         description: "ID of student"
         required: true
         type: "string"
+      security:
+      - AdminSecurity: []
       responses: 
         200:
           description: "Visiting history of student"
