@@ -699,7 +699,30 @@ paths:
             type: "array"
             items:
               $ref: '#/definitions/ResponseEvent'
-        
+  /root/login:
+    get:
+      tags:
+      - "Admin"
+      summary: "Admin login"
+      operationId: "loginRoot"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        401:
+          description: "Invalidate email or password"
+        200:
+          description: "Login successful"
+          schema:
+            $ref: "#/definitions/AccessToken"    
 securityDefinitions:
   AdminSecurity:
     type: "apiKey"
