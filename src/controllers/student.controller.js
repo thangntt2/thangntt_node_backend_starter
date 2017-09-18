@@ -159,6 +159,12 @@ const getStudentLogs = async (req, res) => {
   res.json({ logs, score: logs.length }).end()
 }
 
+const getStudentLogsById = async (req, res) => {
+  const student = await models.Student.findOne({ where: { id: req.pathParams.id } })
+  const logs = await student.getStudentLogs()
+  res.json({ logs, score: logs.length }).end()
+}
+
 export default {
   fetchAll,
   newStudent,
@@ -174,5 +180,6 @@ export default {
   editStudentInfo,
   editStudentUserInfo,
   getStudentLogs,
-  checkoutByBarcode
+  checkoutByBarcode,
+  getStudentLogsById
 }

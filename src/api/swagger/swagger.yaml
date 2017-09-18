@@ -673,6 +673,23 @@ paths:
       security: 
       - AdminSecurity: []
       - StudentSecurity: []
+  /student/{id}/history:
+    get:
+      tags:
+      - "Admin"
+      operationId: "getStudentHistory"
+      summary: "Get student visiting history"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of student"
+        required: true
+        type: "string"
+      responses: 
+        200:
+          description: "Visiting history of student"
+          schema:
+            $ref: '#/definitions/ResponseStudentLog'
   /event:
     get:
       tags:

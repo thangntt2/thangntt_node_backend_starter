@@ -32,7 +32,8 @@ const routerDefine = {
   sponsorUserInfo: Controllers.Sponsor.getSponsorUserInfo,
   studentUserLogs: Controllers.Student.getStudentLogs,
   checkoutByBarcode: Controllers.Student.checkoutByBarcode,
-  loginRoot: Controllers.Other.loginRoot
+  loginRoot: Controllers.Other.loginRoot,
+  getStudentHistory: Controllers.Student.getStudentLogsById
 }
 
 export default (app) => {

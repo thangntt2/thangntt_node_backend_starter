@@ -19,7 +19,6 @@ const loginRoot = async (req, res) => {
     res.status(401).send('bad username or password').end()
     return
   }
-
   const isMatch = await bcrypt.compare(password, admin.password)
   if (!isMatch) {
     res.status(401).send('bad username or password').end()
