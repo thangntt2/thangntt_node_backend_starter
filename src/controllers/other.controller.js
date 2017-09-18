@@ -12,17 +12,17 @@ const loginRoot = async (req, res) => {
   let admin = null
   admin = await models.Admin.findOne({
     where: {
-      email: email
+      userName: email
     }
   })
   if (!admin) {
-    res.status(401).send('bad email or password').end()
+    res.status(401).send('bad username or password').end()
     return
   }
 
   const isMatch = await bcrypt.compare(password, admin.password)
   if (!isMatch) {
-    res.status(401).send('bad email or password').end()
+    res.status(401).send('bad username or password').end()
     return
   }
 
