@@ -543,7 +543,7 @@ paths:
       - "Admin"
       summary: "Edit sponsor profile"
       security: 
-      - StudentSecurity: []
+      - AdminSecurity: []
       operationId: "editSponsorInfo"
       parameters: 
       - in: "body"
