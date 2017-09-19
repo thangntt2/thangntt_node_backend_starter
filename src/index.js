@@ -8,7 +8,8 @@ import middleware from 'swagger-express-middleware'
 import applyMiddleware from './middleware'
 import config from './conf'
 import configRouter from './router'
-
+import multer from 'multer'
+const upload = multer({dest: './tmp'})
 // const options = { useMongoClient: true, keepAlive: 1  };
 // mongoose.Promise = require('bluebird');
 // mongoose.connect(config.MONGODB_URI, options);
@@ -21,6 +22,8 @@ app.use(bodyParser.json())
 app.get('/status', (req, res) => {
   res.send({'OK': true}, 200)
 })
+
+app.use(upload.fields([{name: 'image'}]))
 
 middleware(config.swaggerFile, app, (err, middleware) => {
   if (err) { throw err }

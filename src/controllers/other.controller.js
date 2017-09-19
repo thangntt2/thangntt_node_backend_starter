@@ -36,7 +36,26 @@ const loginRoot = async (req, res) => {
   res.json(accessToken).status(200).end()
 }
 
+const uploadImage = async (req, res) => {
+  res.status(200).json({imageUrl: `/api/image/${req.files.image.filename}`}).end()
+}
+
+export const getImage = (req, res) => {
+  const options = {
+    root: './tmp',
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true,
+      'Content-Type': 'image/png'
+    }
+  }
+  res.sendFile(req.pathParams.imageId, options)
+}
+
 export default {
   getSlotRemain,
-  loginRoot
+  loginRoot,
+  uploadImage,
+  getImage
 }

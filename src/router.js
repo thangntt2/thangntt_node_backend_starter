@@ -33,7 +33,9 @@ const routerDefine = {
   studentUserLogs: Controllers.Student.getStudentLogs,
   checkoutByBarcode: Controllers.Student.checkoutByBarcode,
   loginRoot: Controllers.Other.loginRoot,
-  getStudentHistory: Controllers.Student.getStudentLogsById
+  getStudentHistory: Controllers.Student.getStudentLogsById,
+  uploadImage: Controllers.Other.uploadImage,
+  getImage: Controllers.Other.getImage
 }
 
 export default (app) => {

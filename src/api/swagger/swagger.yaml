@@ -741,7 +741,43 @@ paths:
         200:
           description: "Login successful"
           schema:
-            $ref: "#/definitions/AccessToken"    
+            $ref: "#/definitions/AccessToken"
+  /image/upload:
+    post:
+      tags:
+      - "Images"
+      summary: "upload image"
+      operationId: "uploadImage"
+      parameters:
+      - in: formData
+        name: image
+        type: file
+        description: Photo to upload
+      consumes:
+      - multipart/form-data
+      responses:
+        201:
+          description: "file uploaded"
+          schema:
+            type: "string"
+  /image/{imageId}:
+    get:
+      tags:
+      - "Images"
+      summary: "get image"
+      operationId: "getImage"
+      parameters:
+      - in: "path"
+        name: "imageId"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "file return"
+          schema:
+            type: file
+          
+      
 securityDefinitions:
   AdminSecurity:
     type: "apiKey"
