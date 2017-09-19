@@ -517,6 +517,24 @@ paths:
               $ref: '#/definitions/ResponseSponsor'
       security:
       - AdminSecurity: []
+    post:
+      tags:
+      - "Admin"
+      security:
+      - AdminSecurity: []
+      summary: "Create new sponsor"
+      operationId: "createSponsor"
+      parameters: 
+      - in: "body"
+        name: "sponsor"
+        description: "Sponsor's new information"
+        schema:
+          $ref: "#/definitions/SubmitSponsor"
+      responses:
+        201:
+          description: "successful created new sponsor"
+          schema:
+            $ref: '#/definitions/ResponseSponsor'
   /sponsor/{id}:
     get:
       tags:

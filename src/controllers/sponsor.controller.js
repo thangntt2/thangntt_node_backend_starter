@@ -78,6 +78,13 @@ const editSponsorInfo = async (req, res) => {
   res.json(sponsorInfo).end()
 }
 
+const createSponsor = async (req, res) => {
+  const sponsor = await models.Sponsor.create({
+    ...req.body
+  })
+  res.json(sponsor).end()
+}
+
 export default {
   fetchAll,
   login,
@@ -86,5 +93,6 @@ export default {
   getInfoById,
   getSponsorUserInfo,
   editSponsorInfo,
-  editSponsorUserInfo
+  editSponsorUserInfo,
+  createSponsor
 }
