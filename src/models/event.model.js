@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     status: {
-      type: DataTypes.ENUM('draft', 'under_review', 'awaitings_holding', 'held'),
+      type: DataTypes.ENUM('draft', 'under_review', 'approved', 'held', 'canceled', 'rejected'),
       allowNull: false
     },
     description: {

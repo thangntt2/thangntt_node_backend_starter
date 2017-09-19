@@ -818,6 +818,8 @@ definitions:
         type: "string"
       position:
         type: "string"
+      remark:
+        type: "string"
   ResponseSponsor:
     allOf:
     - $ref: '#/definitions/BaseSponsor'
@@ -905,7 +907,7 @@ definitions:
         format: "url"
       status:
         type: "string"
-        enum: ['draft','under_review','approved','held']
+        enum: ['draft', 'under_review', 'approved', 'held', 'canceled', 'rejected']
       description:
         type: "string"
   SubmitEvent:

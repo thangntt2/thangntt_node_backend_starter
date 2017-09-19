@@ -84,6 +84,10 @@ export default (sequelize, DataTypes) => {
     contactDeadline: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    remark: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   })
 
