@@ -469,7 +469,7 @@ paths:
       - "Admin"
       summary: "Edit student profile"
       security: 
-      - StudentSecurity: []
+      - AdminSecurity: []
       operationId: "editStudentInfo"
       parameters: 
       - in: "body"
