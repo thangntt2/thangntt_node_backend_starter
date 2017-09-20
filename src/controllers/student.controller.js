@@ -169,6 +169,14 @@ const isValidEmail = async (req, res) => {
   res.send(student ? 'valid' : 'invalid').end()
 }
 
+const changePassword = async (req, res) => {
+  const student = await models.Student.findOne({ where: { email: req.query.email } })
+  await student.update({
+    password: await bcrypt.hash(req.query.password, saltRounds)
+  })
+  res.status(200).send('success').end()
+}
+
 export default {
   fetchAll,
   newStudent,
@@ -186,5 +194,6 @@ export default {
   getStudentLogs,
   checkoutByBarcode,
   getStudentLogsById,
-  isValidEmail
+  isValidEmail,
+  changePassword
 }

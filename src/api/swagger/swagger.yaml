@@ -810,7 +810,20 @@ paths:
           schema:
             type: "string"
             enum: ["valid", "invalid"]
-          
+  /student/changePassword:
+    post:
+      summary: "change student password"
+      operationId: "changeStudentPassword"
+      parameters:
+      - in: "query"
+        name: "password"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "success change password"
+          schema:
+            type: "string"
       
 securityDefinitions:
   AdminSecurity:
