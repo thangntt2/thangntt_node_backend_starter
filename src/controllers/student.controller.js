@@ -10,9 +10,6 @@ const fetchAll = async (req, res) => {
   res.send(students).status(200).end()
 }
 
-const time2day = time =>
-  `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
-
 const getRandomInt = (min, max) => {
   min = Math.ceil(min)
   max = Math.floor(max)
@@ -47,13 +44,15 @@ const newStudent = async (req, res) => {
     sex: req.body.sex,
     password: await bcrypt.hash(req.body.password, saltRounds),
     studentCard: req.body.studentCard,
-    image: req.body.image,
+    profileImage: req.body.profileImage,
     studentNumber: req.body.studentNumber,
-    joinDate: time2day(new Date()),
-    deadline: time2day(new Date()),
-    remark: req.body.remark,
+    joinDate: moment().format('YYYY-MM-DD'),
+    deadline: moment().add(30, 'days').format('YYYY-MM-DD'),
+    remark: '',
     barcode: getRandomInt(1000000000000, 1999999999999),
-    status: 'under_review'
+    status: 'under_review',
+    address: req.body.address,
+    phoneNumber: req.body.phoneNumber
   })
   res.status(201).json(student).end()
 }
