@@ -819,6 +819,10 @@ paths:
         name: "password"
         type: "string"
         required: true
+      - in: "query"
+        name: "email"
+        type: "string"
+        required: true
       responses:
         200:
           description: "success change password"
