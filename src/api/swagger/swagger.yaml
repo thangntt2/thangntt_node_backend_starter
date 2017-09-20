@@ -794,6 +794,22 @@ paths:
           description: "file return"
           schema:
             type: file
+            
+  /student/isValidEmail:
+    get:
+      summary: "check if an email is valid email"
+      operationId: "checkValidEmail"
+      parameters:
+      - in: "query"
+        name: "email"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "return valid or invalid"
+          schema:
+            type: "string"
+            enum: ["valid", "invalid"]
           
       
 securityDefinitions:

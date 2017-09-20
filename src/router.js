@@ -36,7 +36,8 @@ const routerDefine = {
   getStudentHistory: Controllers.Student.getStudentLogsById,
   uploadImage: Controllers.Other.uploadImage,
   getImage: Controllers.Other.getImage,
-  createSponsor: Controllers.Sponsor.createSponsor
+  createSponsor: Controllers.Sponsor.createSponsor,
+  checkValidEmail: Controllers.Student.isValidEmail
 }
 
 export default (app) => {

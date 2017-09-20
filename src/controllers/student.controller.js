@@ -164,6 +164,11 @@ const getStudentLogsById = async (req, res) => {
   res.json({ logs, score: logs.length }).end()
 }
 
+const isValidEmail = async (req, res) => {
+  const student = await models.Student.findOne({ where: { email: req.query.email } })
+  res.send(student ? 'valid' : 'invalid').end()
+}
+
 export default {
   fetchAll,
   newStudent,
@@ -180,5 +185,6 @@ export default {
   editStudentUserInfo,
   getStudentLogs,
   checkoutByBarcode,
-  getStudentLogsById
+  getStudentLogsById,
+  isValidEmail
 }
