@@ -1,7 +1,22 @@
+import moment from 'moment'
 import models from '../models'
 
+const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
+
 const fetchAll = async (req, res) => {
-  const events = await models.Event.findAll({})
+  const { limit, offset, timeRange } = req.query
+  const critical = {}
+  if (timeRange) {
+    if (timeRange.length === 2) {
+      critical.date = {
+        $between: [moment(timeRange[0]).format(DATE_ONLY_FORMAT), moment(timeRange[1]).format(DATE_ONLY_FORMAT)]
+      }
+    } else {
+      critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
+    }
+  }
+  console.log(critical)
+  const events = await models.Event.findAll({ limit, offset, where: critical })
   res.json(events).end()
 }
 
