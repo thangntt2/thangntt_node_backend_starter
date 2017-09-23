@@ -1,6 +1,9 @@
 import models from '../models'
 import bcrypt from 'bcrypt'
 import uuidv4 from 'uuid/v4'
+import moment from 'moment'
+
+const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
 const fetchAll = async (req, res) => {
   const sponsors = await models.Sponsor.findAll({})
@@ -47,8 +50,20 @@ const logoutSponsor = async (req, res) => {
 }
 
 const listEvent = async (req, res) => {
+  const { limit, offset, timeRange } = req.query
+  const critical = {}
+  if (timeRange) {
+    if (timeRange.length === 2) {
+      critical.date = {
+        $between: [moment(timeRange[0]).format(DATE_ONLY_FORMAT), moment(timeRange[1]).format(DATE_ONLY_FORMAT)]
+      }
+    } else {
+      critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
+    }
+  }
+  console.log(critical)
   const sponsor = req.userInfo
-  const events = await sponsor.getEvents()
+  const events = await sponsor.getEvents({ limit, offset, where: critical })
   res.json(events).end()
 }
 

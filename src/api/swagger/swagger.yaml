@@ -280,6 +280,14 @@ paths:
         description: "Offset of the return results"
         required: false
         type: "integer"
+      - name: "timeRange"
+        in: "query"
+        description: "Time range in query"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          format: "date"
       security:
       - SponsorSecurity: []
       responses:
