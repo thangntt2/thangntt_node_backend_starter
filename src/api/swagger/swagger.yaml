@@ -499,6 +499,7 @@ paths:
     get:
       tags:
       - "Admin"
+      - "Student"
       summary: "View list sponsor"
       operationId: "sponsorList"
       parameters:
@@ -523,8 +524,6 @@ paths:
             type: "array"
             items:
               $ref: '#/definitions/ResponseSponsor'
-      security:
-      - AdminSecurity: []
     post:
       tags:
       - "Admin"
