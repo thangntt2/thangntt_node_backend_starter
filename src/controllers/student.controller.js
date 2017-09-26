@@ -143,6 +143,7 @@ const checkoutByBarcode = async (req, res) => {
   const student = await models.Student.findOne({ where: { barcode: req.query.barcode } })
   if (!student) {
     res.status(404).send('Cannot find student with given barcode').end()
+    return
   }
   const log = await models.StudentLog.create({
     date: moment().format('YYYY-MM-DD'),

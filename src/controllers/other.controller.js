@@ -1,9 +1,20 @@
 import models from '../models'
 import bcrypt from 'bcrypt'
+import moment from 'moment'
 import uuidv4 from 'uuid/v4'
+import sequelize from 'sequelize'
 
 const getSlotRemain = async (req, res) => {
-  res.json(200).end()
+  try {
+    const student = await models.StudentLog.count({ where: {
+      date: moment().format('YYYY-MM-DD'),
+      time: { gt: moment().subtract(90, 'm') }
+    },
+      distinct: true, col: 'studentId' })
+    res.json(student).end()
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const loginRoot = async (req, res) => {
