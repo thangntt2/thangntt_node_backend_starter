@@ -25,7 +25,7 @@ const fetchAll = async (req, res) => {
         `MATCH(eventTitle, description) AGAINST("${search}")`
       )
     ),
-    order: [[sort, sortOrder]]
+    order: sort && sortOrder && [[sort, sortOrder]]
   })
   res.json(events).end()
 }
