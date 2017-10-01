@@ -2,6 +2,7 @@ import models from '../models'
 import bcrypt from 'bcrypt'
 import uuidv4 from 'uuid/v4'
 import moment from 'moment'
+import sequelize from 'sequelize'
 
 const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
@@ -50,7 +51,7 @@ const logoutSponsor = async (req, res) => {
 }
 
 const listEvent = async (req, res) => {
-  const { limit, offset, timeRange } = req.query
+  const { limit, offset, timeRange, search, sort, sortOrder } = req.query
   const critical = {}
   if (timeRange) {
     if (timeRange.length === 2) {
@@ -63,7 +64,17 @@ const listEvent = async (req, res) => {
   }
   console.log(critical)
   const sponsor = req.userInfo
-  const events = await sponsor.getEvents({ limit, offset, where: critical })
+  const events = await sponsor.getEvents({
+    limit,
+    offset,
+    where: sequelize.and(
+      critical,
+      search && sequelize.literal(
+        `MATCH(eventTitle, description) AGAINST("${search}")`
+      )
+    ),
+    order: [[sort, sortOrder]]
+  })
   res.json(events).end()
 }
 

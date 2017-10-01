@@ -31,6 +31,11 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     }
+  }, {
+    indexes: [
+      // add a FULLTEXT index
+      { type: 'FULLTEXT', name: 'text_idx', fields: ['description', 'eventTitle'] }
+    ]
   })
 
   Event.associate = (models) => {

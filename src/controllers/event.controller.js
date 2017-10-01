@@ -1,10 +1,11 @@
 import moment from 'moment'
+import sequelize from 'sequelize'
 import models from '../models'
 
 const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
 const fetchAll = async (req, res) => {
-  const { limit, offset, timeRange } = req.query
+  const { limit, offset, timeRange, search, sort, sortOrder } = req.query
   const critical = {}
   if (timeRange) {
     if (timeRange.length === 2) {
@@ -15,8 +16,17 @@ const fetchAll = async (req, res) => {
       critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
     }
   }
-  console.log(critical)
-  const events = await models.Event.findAll({ limit, offset, where: critical })
+  const events = await models.Event.findAll({
+    limit,
+    offset,
+    where: sequelize.and(
+      critical,
+      search && sequelize.literal(
+        `MATCH(eventTitle, description) AGAINST("${search}")`
+      )
+    ),
+    order: [[sort, sortOrder]]
+  })
   res.json(events).end()
 }
 

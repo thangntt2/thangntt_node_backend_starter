@@ -1,8 +1,10 @@
 import uuidv4 from 'uuid/v4'
 import bcrypt from 'bcrypt'
 import moment from 'moment'
+import sequelize from 'sequelize'
 import models from '../models'
 
+const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 const saltRounds = 10
 
 const fetchAll = async (req, res) => {
@@ -95,8 +97,33 @@ const logoutStudent = async (req, res) => {
 }
 
 const listEvent = async (req, res) => {
+  // const studentInfo = req.userInfo
+  // const events = await studentInfo.getEvents()
+  // res.json(events).status(200).end()
+  const { limit, offset, timeRange, search, sort, sortOrder } = req.query
+  const critical = {}
+  if (timeRange) {
+    if (timeRange.length === 2) {
+      critical.date = {
+        $between: [moment(timeRange[0]).format(DATE_ONLY_FORMAT), moment(timeRange[1]).format(DATE_ONLY_FORMAT)]
+      }
+    } else {
+      critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
+    }
+  }
+  console.log(critical)
   const studentInfo = req.userInfo
-  const events = await studentInfo.getEvents()
+  const events = await studentInfo.getEvents({
+    limit,
+    offset,
+    where: sequelize.and(
+      critical,
+      search && sequelize.literal(
+        `MATCH(eventTitle, description) AGAINST("${search}")`
+      )
+    ),
+    order: [[sort, sortOrder]]
+  })
   res.json(events).status(200).end()
 }
 
