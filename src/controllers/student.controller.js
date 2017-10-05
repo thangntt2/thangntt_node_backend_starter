@@ -8,7 +8,17 @@ const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 const saltRounds = 10
 
 const fetchAll = async (req, res) => {
-  const students = await models.Student.findAll({})
+  const { limit, offset, search, sort, sortOrder } = req.query
+  const students = await models.Student.findAll({
+    limit,
+    offset,
+    where: sequelize.and(
+      search && sequelize.literal(
+        `MATCH(familyName, giveName) AGAINST("${search}")`
+      )
+    ),
+    order: sort && sortOrder && [[sort, sortOrder]]
+  })
   res.send(students).status(200).end()
 }
 

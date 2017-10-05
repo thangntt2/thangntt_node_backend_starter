@@ -7,7 +7,17 @@ import sequelize from 'sequelize'
 const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
 const fetchAll = async (req, res) => {
-  const sponsors = await models.Sponsor.findAll({})
+  const { limit, offset, search, sort, sortOrder } = req.query
+  const sponsors = await models.Sponsor.findAll({
+    limit,
+    offset,
+    where: sequelize.and(
+      search && sequelize.literal(
+        `MATCH(companyName) AGAINST("${search}")`
+      )
+    ),
+    order: sort && sortOrder && [[sort, sortOrder]]
+  })
   res.send(sponsors).status(200).end()
 }
 

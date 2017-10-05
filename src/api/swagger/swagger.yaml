@@ -438,6 +438,22 @@ paths:
         description: "Offset of the return results"
         required: false
         type: "integer"
+      - name: "search"
+        in: "query"
+        description: "Search query"
+        required: false
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "Sort by field"
+        required: false
+        type: "string"
+      - name: "sortOrder"
+        in: "query"
+        description: "Sort order"
+        required: false
+        type: "string"
+        enum: ["asc", "desc"]
       responses:
         405:
           description: "Invalid input"
@@ -545,6 +561,22 @@ paths:
         description: "Offset of the return results"
         required: false
         type: "integer"
+      - name: "search"
+        in: "query"
+        description: "Search query"
+        required: false
+        type: "string"
+      - name: "sort"
+        in: "query"
+        description: "Sort by field"
+        required: false
+        type: "string"
+      - name: "sortOrder"
+        in: "query"
+        description: "Sort order"
+        required: false
+        type: "string"
+        enum: ["asc", "desc"]
       responses:
         405:
           description: "Invalid input"
