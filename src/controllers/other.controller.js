@@ -100,5 +100,6 @@ export default {
   getSlotRemain,
   loginRoot,
   uploadImage,
-  getImage
+  getImage,
+  getStatistic
 }
