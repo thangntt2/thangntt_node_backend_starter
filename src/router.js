@@ -38,7 +38,8 @@ const routerDefine = {
   getImage: Controllers.Other.getImage,
   createSponsor: Controllers.Sponsor.createSponsor,
   checkValidEmail: Controllers.Student.isValidEmail,
-  changeStudentPassword: Controllers.Student.changePassword
+  changeStudentPassword: Controllers.Student.changePassword,
+  getStatistic: Controllers.Other.getStatistic,
 }
 
 export default (app) => {

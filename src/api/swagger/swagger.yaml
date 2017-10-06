@@ -923,6 +923,21 @@ paths:
           description: "success change password"
           schema:
             type: "string"
+  /statistic:
+    get:
+      tags:
+      - "Admin"
+      - "Sponsor"
+      security: 
+      - AdminSecurity: []
+      - SponsorSecurity: []
+      summary: "Get number statistic"
+      operationId: "getStatistic"
+      responses:
+        200:
+          description: "Success return statistic"
+          schema:
+            $ref: "#/definitions/ResponseStatistic"
       
 securityDefinitions:
   AdminSecurity:
@@ -1109,4 +1124,15 @@ definitions:
         items:
           $ref: '#/definitions/ResponseBaseStudentLog'
       score:
+        type: "integer"
+  ResponseStatistic:
+    type: "object"
+    properties:
+      numberSponsor:
+        type: "integer"
+      numberSponsorThisMonth:
+        type: "integer"
+      numberStudent:
+        type: "integer"
+      numberStudentThisMonth:
         type: "integer"

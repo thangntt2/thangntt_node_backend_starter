@@ -14,6 +14,38 @@ const getSlotRemain = async (req, res) => {
     res.json(student).end()
   } catch (error) {
     console.log(error)
+    res.status(500).end()
+  }
+}
+
+const getStatistic = async (req, res) => {
+  try {
+    const now = moment()
+    const numberStudent = await models.Student.count({})
+    const numberStudentThisMonth = await models.Student.count({
+      where: {
+        joinDate: {
+          $between: [now.startOf('M'), now.endOf('M')],
+        }
+      }
+    })
+    const numberSponsor = await models.Sponsor.count({})
+    const numberSponsorThisMonth = await models.Sponsor.count({
+      where: {
+        contactStartDate: {
+          $between: [now.startOf('M'), now.endOf('M')],
+        }
+      }
+    })
+    res.json({
+      numberStudent,
+      numberStudentThisMonth,
+      numberSponsor,
+      numberSponsorThisMonth,
+    }).end()
+  } catch (error) {
+    console.log(error)
+    res.status(500).end()
   }
 }
 
