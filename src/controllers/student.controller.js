@@ -14,10 +14,10 @@ const fetchAll = async (req, res) => {
     offset,
     where: sequelize.or(
       search && sequelize.literal(
-        `WHERE giveName LIKE '%${search}%'`
+        `giveName LIKE '%${search}%'`
       ),
       search && sequelize.literal(
-        `WHERE familyName LIKE '%${search}%'`
+        `familyName LIKE '%${search}%'`
       )
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
