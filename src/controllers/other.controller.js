@@ -4,6 +4,8 @@ import moment from 'moment'
 import uuidv4 from 'uuid/v4'
 import sequelize from 'sequelize'
 
+const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
+
 const getSlotRemain = async (req, res) => {
   try {
     const student = await models.StudentLog.count({ where: {
@@ -22,18 +24,28 @@ const getStatistic = async (req, res) => {
   try {
     const now = moment()
     const numberStudent = await models.Student.count({})
+    console.log({ numberStudent })
     const numberStudentThisMonth = await models.Student.count({
       where: {
         joinDate: {
-          $between: [now.startOf('M'), now.endOf('M')],
+          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
         }
       }
     })
+    console.log({ numberStudentThisMonth })
     const numberSponsor = await models.Sponsor.count({})
     const numberSponsorThisMonth = await models.Sponsor.count({
       where: {
         contactStartDate: {
-          $between: [now.startOf('M'), now.endOf('M')],
+          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
+        }
+      }
+    })
+    const numberEvent = await models.Event.count({})
+    const numberEventThisMonth = await models.Event.count({
+      where: {
+        date: {
+          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
         }
       }
     })
@@ -42,6 +54,8 @@ const getStatistic = async (req, res) => {
       numberStudentThisMonth,
       numberSponsor,
       numberSponsorThisMonth,
+      numberEvent,
+      numberEventThisMonth
     }).end()
   } catch (error) {
     console.log(error)

@@ -1136,3 +1136,7 @@ definitions:
         type: "integer"
       numberStudentThisMonth:
         type: "integer"
+      numberEvent:
+        type: "integer"
+      numberEventThisMonth:
+        type: "integer"
