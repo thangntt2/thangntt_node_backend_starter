@@ -12,12 +12,9 @@ const fetchAll = async (req, res) => {
   const students = await models.Student.findAll({
     limit,
     offset,
-    where: sequelize.or(
+    where: sequelize.and(
       search && sequelize.literal(
-        `giveName LIKE '%${search}%'`
-      ),
-      search && sequelize.literal(
-        `familyName LIKE '%${search}%'`
+        `(CONCAT(familyName, giveName) LIKE '%${search}%')`
       )
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
