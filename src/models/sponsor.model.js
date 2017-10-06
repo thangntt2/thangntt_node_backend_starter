@@ -89,11 +89,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     }
-  }, {
-    indexes: [
-      // add a FULLTEXT index
-      { type: 'FULLTEXT', name: 'text_idx', fields: ['companyName'] }
-    ]
   })
 
   Sponsor.associate = (models) => {

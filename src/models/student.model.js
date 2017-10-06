@@ -75,11 +75,6 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ENUM('member', 'under_review', 'deactivated'),
       allowNull: false
     }
-  }, {
-    indexes: [
-      // add a FULLTEXT index
-      { type: 'FULLTEXT', name: 'text_idx', fields: ['familyName', 'giveName'] }
-    ]
   })
 
   Student.associate = (models) => {

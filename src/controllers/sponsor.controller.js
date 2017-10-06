@@ -13,7 +13,7 @@ const fetchAll = async (req, res) => {
     offset,
     where: sequelize.and(
       search && sequelize.literal(
-        `MATCH(companyName) AGAINST("${search}")`
+        `WHERE companyName LIKE '%${search}%'`
       )
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
