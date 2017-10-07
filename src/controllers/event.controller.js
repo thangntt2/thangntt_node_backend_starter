@@ -16,6 +16,9 @@ const fetchAll = async (req, res) => {
       critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
     }
   }
+  critical.status = {
+    $ne: 'draft'
+  }
   const events = await models.Event.findAll({
     limit,
     offset,
@@ -23,7 +26,7 @@ const fetchAll = async (req, res) => {
       critical,
       search && sequelize.literal(
         `MATCH(eventTitle, description) AGAINST("${search}")`
-      )
+      ),
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
   })
