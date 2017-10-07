@@ -77,7 +77,7 @@ const loginStudent = async (req, res) => {
       email: email
     }
   })
-  if (!student) {
+  if (!student || student.status !== 'member') {
     res.status(401).send('Invalidate student email or password').end()
     return
   }
