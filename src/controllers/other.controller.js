@@ -41,11 +41,20 @@ const getStatistic = async (req, res) => {
         }
       }
     })
-    const numberEvent = await models.Event.count({})
+    const numberEvent = await models.Event.count({
+      where: {
+        status: {
+          $ne: 'draft'
+        }
+      }
+    })
     const numberEventThisMonth = await models.Event.count({
       where: {
         date: {
           $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
+        },
+        status: {
+          $ne: 'draft'
         }
       }
     })
