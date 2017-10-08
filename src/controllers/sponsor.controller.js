@@ -60,7 +60,10 @@ const login = async (req, res) => {
     include: [models.Sponsor]
   })
   sponsor.addAccessToken(accessToken)
-  res.json(accessToken).status(200).end()
+  res.json({
+    ...accessToken,
+    profile: sponsor
+  }).status(200).end()
 }
 
 const logoutSponsor = async (req, res) => {
