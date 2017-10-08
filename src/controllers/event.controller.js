@@ -19,6 +19,14 @@ const fetchAll = async (req, res) => {
   critical.status = {
     $ne: 'draft'
   }
+  const total = await models.Event.count({
+    where: sequelize.and(
+      critical,
+      search && sequelize.literal(
+        `MATCH(eventTitle, description) AGAINST("${search}")`
+      )
+    )
+  })
   const events = await models.Event.findAll({
     limit,
     offset,
@@ -26,11 +34,15 @@ const fetchAll = async (req, res) => {
       critical,
       search && sequelize.literal(
         `MATCH(eventTitle, description) AGAINST("${search}")`
-      ),
+      )
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
   })
-  res.json(events).end()
+  res.json({
+    total,
+    offset,
+    results: events
+  }).end()
 }
 
 const getInfo = async (req, res) => {

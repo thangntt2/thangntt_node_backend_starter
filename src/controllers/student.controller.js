@@ -9,6 +9,13 @@ const saltRounds = 10
 
 const fetchAll = async (req, res) => {
   const { limit, offset, search, sort, sortOrder } = req.query
+  const total = await models.Student.count({
+    where: sequelize.and(
+      search && sequelize.literal(
+        `(CONCAT(familyName, giveName) LIKE '%${search}%')`
+      )
+    )
+  })
   const students = await models.Student.findAll({
     limit,
     offset,
@@ -19,7 +26,11 @@ const fetchAll = async (req, res) => {
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
   })
-  res.send(students).status(200).end()
+  res.send({
+    total,
+    offset,
+    results: students
+  }).status(200).end()
 }
 
 const getRandomInt = (min, max) => {

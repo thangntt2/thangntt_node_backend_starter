@@ -167,9 +167,7 @@ paths:
         200:
           description: "Return all events which student applied"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/ResponseEvent"
+            $ref: "#/definitions/ResponseEvent"
   /student/barcode/{barcode}:
     get:
       tags:
@@ -330,9 +328,7 @@ paths:
         200:
           description: "Return all events which sponsor created"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/ResponseEvent"
+            $ref: "#/definitions/ResponseEvent"
     post:
       tags:
       - "Event"
@@ -462,9 +458,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/ResponseStudent"
+            $ref: "#/definitions/ResponseStudent"
       security:
       - AdminSecurity: []
   /student/{id}/status:
@@ -585,9 +579,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            type: "array"
-            items:
-              $ref: '#/definitions/ResponseSponsor'
+            $ref: '#/definitions/ResponseSponsor'
     post:
       tags:
       - "Admin"
@@ -741,9 +733,7 @@ paths:
         200:
           description: "List students who have joined the event"
           schema:
-            type: 'array'
-            items:
-              $ref: '#/definitions/ResponseStudent'
+            $ref: '#/definitions/ResponseStudent'
       security: 
       - AdminSecurity: []
       - SponsorSecurity: []
@@ -828,9 +818,7 @@ paths:
         200:
           description: "Return all event"
           schema:
-            type: "array"
-            items:
-              $ref: '#/definitions/ResponseEvent'
+            $ref: '#/definitions/ResponseEvent'
   /root/login:
     get:
       tags:
@@ -972,9 +960,6 @@ definitions:
       email:
         type: "string"
         format: "email"
-      password:
-        type: "string"
-        format: "password"
       departure:
         type: "string"
       position:
@@ -982,16 +967,30 @@ definitions:
       remark:
         type: "string"
   ResponseSponsor:
+    type: "object"
+    properties:
+      total:
+        type: "integer"
+      offset:
+        type: "integer"
+      results:
+        type: "array"
+        items:
+          allOf:
+          - $ref: '#/definitions/BaseSponsor'
+          - type: "object"
+            properties:
+              id:
+                type: "integer"
+                format: "int64"
+  SubmitSponsor:
     allOf:
     - $ref: '#/definitions/BaseSponsor'
     - type: "object"
       properties:
-        id:
-          type: "integer"
-          format: "int64"
-  SubmitSponsor:
-    allOf:
-    - $ref: '#/definitions/BaseSponsor'
+        password:
+          type: "string"
+          format: "password"
   BaseStudent:
     type: "object"
     properties:
@@ -1020,9 +1019,6 @@ definitions:
       dateOfBirth:
         type: "string"
         format: "date"
-      password:
-        type: "string"
-        format: "password"
       studentCard:
         type: "string"
         format: "url"
@@ -1036,14 +1032,28 @@ definitions:
   SubmitStudent:
     allOf:
     - $ref: '#/definitions/BaseStudent'
-  ResponseStudent:
-    allOf: 
-    - $ref: '#/definitions/BaseStudent'
     - type: "object"
       properties:
-        id:
-          type: "integer"
-          format: "int64"
+        password:
+          type: "string"
+          format: "password"
+  ResponseStudent:
+    type: "object"
+    properties:
+      total:
+        type: "integer"
+      offset:
+        type: "integer"
+      results:
+        type: "array"
+        items:
+          allOf: 
+          - $ref: '#/definitions/BaseStudent'
+          - type: "object"
+            properties:
+              id:
+                type: "integer"
+                format: "int64"
   BaseEvent:
     type: "object"
     properties:
@@ -1075,16 +1085,25 @@ definitions:
     allOf: 
     - $ref: '#/definitions/BaseEvent'
   ResponseEvent:
-    allOf: 
-    - $ref: '#/definitions/BaseEvent'
-    - type: 'object'
-      properties:
-        id:
-          type: "integer"
-          format: "int64"
-        sponsorId:
-          type: "integer"
-          format: "int64"
+    type: "object"
+    properties:
+      limit:
+        type: "integer"
+      offset:
+        type: "integer"
+      results:
+        type: "array"
+        items:
+          allOf: 
+          - $ref: '#/definitions/BaseEvent'
+          - type: 'object'
+            properties:
+              id:
+                type: "integer"
+                format: "int64"
+              sponsorId:
+                type: "integer"
+                format: "int64"
   AccessToken:
     type: "object"
     properties:

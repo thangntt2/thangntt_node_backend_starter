@@ -8,6 +8,13 @@ const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
 const fetchAll = async (req, res) => {
   const { limit, offset, search, sort, sortOrder } = req.query
+  const total = await models.Sponsor.count({
+    where: sequelize.and(
+      search && sequelize.literal(
+        `companyName LIKE '%${search}%'`
+      )
+    )
+  })
   const sponsors = await models.Sponsor.findAll({
     limit,
     offset,
@@ -18,7 +25,11 @@ const fetchAll = async (req, res) => {
     ),
     order: sort && sortOrder && [[sort, sortOrder]]
   })
-  res.send(sponsors).status(200).end()
+  res.send({
+    total,
+    offset,
+    results: sponsors
+  }).status(200).end()
 }
 
 const login = async (req, res) => {
