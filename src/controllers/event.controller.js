@@ -16,9 +16,15 @@ const fetchAll = async (req, res) => {
       critical.date = moment(timeRange[0]).format(DATE_ONLY_FORMAT)
     }
   }
-  critical.status = {
-    $ne: 'draft',
-    $in: status
+  if (status) {
+    critical.status = {
+      $ne: 'draft',
+      $in: status
+    }
+  } else {
+    critical.status = {
+      $ne: 'draft'
+    }
   }
   const total = await models.Event.count({
     where: sequelize.and(
