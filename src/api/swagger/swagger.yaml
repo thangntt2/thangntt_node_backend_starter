@@ -806,6 +806,13 @@ paths:
         required: false
         type: "string"
         enum: ["asc", "desc"]
+      - name: "status"
+        in: "query"
+        description: "Event status"
+        required: false
+        type: "array"
+        items:
+          type: "string"
       - name: "timeRange"
         in: "query"
         description: "Time range in query"

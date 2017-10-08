@@ -5,7 +5,7 @@ import models from '../models'
 const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
 
 const fetchAll = async (req, res) => {
-  const { limit, offset, timeRange, search, sort, sortOrder } = req.query
+  const { limit, offset, timeRange, search, sort, sortOrder, status } = req.query
   const critical = {}
   if (timeRange) {
     if (timeRange.length === 2) {
@@ -17,7 +17,8 @@ const fetchAll = async (req, res) => {
     }
   }
   critical.status = {
-    $ne: 'draft'
+    $ne: 'draft',
+    $in: status
   }
   const total = await models.Event.count({
     where: sequelize.and(
