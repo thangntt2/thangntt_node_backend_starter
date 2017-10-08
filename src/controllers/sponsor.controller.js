@@ -61,7 +61,7 @@ const login = async (req, res) => {
   })
   sponsor.addAccessToken(accessToken)
   res.json({
-    ...accessToken,
+    ...accessToken.toJSON(),
     profile: sponsor
   }).status(200).end()
 }
