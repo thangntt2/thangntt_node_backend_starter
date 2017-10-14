@@ -1,3 +1,3 @@
-import _student from './student.controller'
+import _user from './user.controller'
 
-export const Student = _student
+export const User = _user

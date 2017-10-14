@@ -1,36 +1,37 @@
-// import passport from 'passport'
-// import { Strategy as BearerStrategy } from 'passport-http-bearer'
-// import models from '../models'
-// passport.use(new BearerStrategy(
-//   async (token, done) => {
-//     const tokenObjs = await models.AccessToken.findAll({
-//       where: { accessToken: token }
-//     })
-//     if (!tokenObjs || !tokenObjs.length() || tokenObjs[0].accessTokenExpiresOn < Date.now()) {
-//       return done(null, false)
-//     }
-//     return done(null, tokenObjs[0], { scope: 'all' })
+import passport from 'passport'
+const JwtStrategy = require('passport-jwt').Strategy
+const ExtractJwt = require('passport-jwt').ExtractJwt
+// const FacebookStrategy = require('passport-facebook').Strategy
+
+var opts = {}
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
+opts.secretOrKey = '4d808924-2b7d-46be-9f8d-069834842f80'
+opts.issuer = 'thangntt@themissingcorner.com'
+opts.audience = 'unify.missingcorner.com'
+
+// const FACEBOOK_APP_ID = 'abc'
+// const FACEBOOK_APP_SECRET = 'def'
+
+passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
+  const user = jwtPayload.user
+  if (!user) {
+    done(new Error('invalid user'))
+  }
+  done(null, user)
+}))
+
+// passport.use(new FacebookStrategy({
+//   clientID: FACEBOOK_APP_ID,
+//   clientSecret: FACEBOOK_APP_SECRET,
+//   callbackURL: 'http://localhost:3000/auth/facebook/callback'
+// }, async (accessToken, refreshToken, profile, done) => {
+//   const user = await User.findOne({ facebookId: profile.id }).exec()
+//   if (!user) {
+//     done(new Error('invalid user'))
 //   }
-// ))
+//   done(null, user)
+// }))
 
 export default (app) => {
-  // app.all('/api/*', passport.authenticate('bearer', { session: false }))
-  app.all('/api/*', (req, res, next) => {
-    console.log(req.headers)
-    if (req.headers['admin-api-key']) {
-      console.log('A request from admin user')
-      console.log(req.swagger)
-      req.userInfo = { name: 'admin' }
-      return next()
-    } else if (req.headers['student-api-key']) {
-      console.log('A request from student user')
-      req.userInfo = { name: 'student' }
-      return next()
-    } else if (req.headers['sponsor-api-key']) {
-      console.log('A request from sponsor user')
-      req.userInfo = { name: 'sponsor' }
-      return next()
-    }
-    res.status(401).end()
-  })
+  app.use('/api', passport.authenticate(['jwt']))
 }

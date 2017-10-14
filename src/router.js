@@ -1,10 +1,17 @@
 import * as Controllers from './controllers'
 
 const routerDefine = {
-  studentList: Controllers.Student.fetchAll
+  // studentList: Controllers.Student.fetchAll
+  // login: Controllers.User.login,
+  // register: Controllers.User.registerUser
 }
 
 export default (app) => {
+  /**
+   * Other routes
+   */
+  app.post('/login', Controllers.User.login)
+  app.post('/register', Controllers.User.registerUser)
   /**
    * Router handler
    */

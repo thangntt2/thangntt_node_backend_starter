@@ -1,20 +1,17 @@
 import bcrypt from 'bcrypt'
 
 export default (sequelize, DataTypes) => {
-    const User = sequelize.define('Use', {
-      name: DataTypes.STRING,
-      userName: DataTypes.STRING,
-      email: DataTypes.STRING,
-      facebookId: DataTypes.STRING,
-      password: DataTypes.STRING,
-      description: DataTypes.STRING
-    }, {
-      hooks: {
-        beforeSave: (instance, options) => {
-          instance.password = bcrypt.hashSync(instance.password)
-        }
-      }
-    })
-    return User
-  }
+  const User = sequelize.define('User', {
+    name: DataTypes.STRING,
+    userName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    facebookId: DataTypes.STRING,
+    password: DataTypes.STRING,
+    description: DataTypes.STRING
+  })
+  User.beforeCreate((user) => {
+    user.password = bcrypt.hashSync(user.password, 10)
+  })
+  return User
+}
   

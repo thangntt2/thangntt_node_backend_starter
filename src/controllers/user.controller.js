@@ -5,33 +5,34 @@ import models from '../models'
 const secret = '4d808924-2b7d-46be-9f8d-069834842f80'
 
 const registerUser = async (req, res) => {
+  const submitUser = req.body
   try {
-    const user = await models.User.find({ where: { email: req.body.email } })
-    if (!user) {
-      res.status(401).send('Email or password not match! 1').end()
+    const checkUser = await models.User.find({ where: { email: submitUser.email } })
+    if (checkUser) {
+      res.status(400).send('Not a valid user').end()
       return
     }
-    const isMatchPw = bcrypt.compareSync(req.body.password, user.password)
-    if (!isMatchPw) {
-      res.status(401).send('Email or password not match!').end()
-      return
-    }
-    const jwtoken = jwt.sign({
-      email: user.email,
-      name: user.name,
-      userType: user.userType
-    }, secret, {
-      expiresIn: '6h'
+    const newUser = await models.User.create({
+      name: submitUser.name,
+      userName: submitUser.userName,
+      email: submitUser.email,
+      facebookId: null,
+      password: submitUser.password,
+      description: submitUser.description
     })
-    res.send(jwtoken).end()
+    await newUser.save()
+    res.json(newUser).end()
   } catch (err) {
     console.log(err)
-    res.status(500).end()
+    res.status(500).send(err).end()
   }
 }
 
 const login = async (req, res) => {
-  const user = await models.User.find({ where: { userName: req.body.userName } })
+  console.log(req.body)
+  const user = req.body.userName
+    ? await models.User.find({ where: { userName: req.body.userName } })
+    : await models.User.find({ where: { email: req.body.email } })
   if (!user) {
     res.status(401).send('Invalid username').end()
     return
@@ -44,7 +45,8 @@ const login = async (req, res) => {
     email: user.email,
     name: user.name,
     userName: user.userName,
-    facebookId: user.facebookId
+    facebookId: user.facebookId,
+    description: user.description
   }, secret, {
     expiresIn: '6h'
   })

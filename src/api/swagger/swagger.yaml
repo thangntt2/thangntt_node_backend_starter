@@ -1,41 +1,100 @@
 swagger: "2.0"
 info:
-  description: "BlaynCafe root API"
-  version: "0.1.0"
-  title: "BlaynCafe API"
+  description: "Cryptogram API"
+  version: "1.0.0"
+  title: "Cryptogram"
+
+host: "localhost:3000"
 basePath: "/api"
 tags:
-- name: "Student"
-- name: "Event"
-- name: "Sponsor"
-- name: "Admin"
-- name: "Image"
-consumes:
-- "application/json"
-produces:
-- "application/json"
+- name: "user"
 schemes:
 - "http"
+consumes:
+- "application/json"
+- "application/xml"
+produces:
+- "application/json"
 paths:
   /login:
     post:
+      tags:
+      - "user"
+      summary: "Login and get AccessToken"
+      description: ""
+      operationId: "login"
       parameters:
-      - in: body
-        name: email
+      - in: "body"
+        description: "SubmitUser"
         required: true
-        type: string
-      - in: body
-        name: password
-        required: true
-        type: string
+        schema:
+          $ref: '#/definitions/LoginUser'
       responses:
         200:
-          description: "Login success"
-          type: string
+          description: OK
+          schema:
+            type: string
+  /register:
+    post:
+      tags:
+      - "user"
+      summary: "Register"
+      description: ""
+      operationId: "register"
+      parameters: 
+      - in: "body"
+        name: "user"
+        description: "submit user"
+        required: true
+        schema:
+          $ref: '#/definitions/SubmitUser'
+      responses:
+        201:
+          description: OK
+          schema:
+            $ref: '#/definitions/ResponseUser'
       
+    
 securityDefinitions:
-  Authorization:
+  api_key:
     type: "apiKey"
-    name: "AUTHORIZATION"
+    name: "Authorization"
     in: "header"
-# definitions:
+definitions:
+  BaseUser:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      userName:
+        type: "string"
+      email:
+        type: "string"
+        format: "email"
+  ResponseUser:
+    allOf:
+      - $ref: '#/definitions/BaseUser'
+      - type: "object"
+        properties:
+          id:
+            type: "string"
+  SubmitUser:
+    allOf:
+      - $ref: "#/definitions/BaseUser"
+      - type: "object"
+        properties:
+          password:
+            type: "string"
+            format: "password"
+  LoginUser:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        format: "email"
+      password:
+        type: "string"
+        format: "password"
+    
