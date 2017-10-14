@@ -4,6 +4,7 @@ const routerDefine = {
   // studentList: Controllers.Student.fetchAll
   // login: Controllers.User.login,
   // register: Controllers.User.registerUser
+  test: (req, res) => {res.send('aaa')}
 }
 
 export default (app) => {

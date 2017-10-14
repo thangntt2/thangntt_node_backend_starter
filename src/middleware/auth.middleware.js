@@ -8,12 +8,14 @@ opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
 opts.secretOrKey = '4d808924-2b7d-46be-9f8d-069834842f80'
 opts.issuer = 'thangntt@themissingcorner.com'
 opts.audience = 'unify.missingcorner.com'
+opts.authScheme = 'Bearer'
 
 // const FACEBOOK_APP_ID = 'abc'
 // const FACEBOOK_APP_SECRET = 'def'
 
 passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
   const user = jwtPayload.user
+  console.log(jwtPayload)
   if (!user) {
     done(new Error('invalid user'))
   }
@@ -33,5 +35,5 @@ passport.use(new JwtStrategy(opts, async (jwtPayload, done) => {
 // }))
 
 export default (app) => {
-  app.use('/api', passport.authenticate(['jwt']))
+  app.use('/api', passport.authenticate('bearer', { session: false }))
 }

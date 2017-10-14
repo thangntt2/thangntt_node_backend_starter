@@ -45,6 +45,7 @@
     "jwt": "^0.2.0",
     "morgan": "^1.8.0",
     "mysql2": "^1.4.0",
+    "node-base64": "^0.0.1",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",

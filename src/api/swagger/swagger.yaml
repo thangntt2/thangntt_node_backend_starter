@@ -16,43 +16,51 @@ consumes:
 produces:
 - "application/json"
 paths:
-  /login:
-    post:
-      tags:
-      - "user"
-      summary: "Login and get AccessToken"
-      description: ""
-      operationId: "login"
-      parameters:
-      - in: "body"
-        description: "SubmitUser"
-        required: true
-        schema:
-          $ref: '#/definitions/LoginUser'
+  # /login:
+  #   post:
+  #     tags:
+  #     - "user"
+  #     summary: "Login and get AccessToken"
+  #     description: ""
+  #     operationId: "login"
+  #     parameters:
+  #     - in: "body"
+  #       description: "SubmitUser"
+  #       required: true
+  #       schema:
+  #         $ref: '#/definitions/LoginUser'
+  #     responses:
+  #       200:
+  #         description: OK
+  #         schema:
+  #           type: string
+  # /register:
+  #   post:
+  #     tags:
+  #     - "user"
+  #     summary: "Register"
+  #     description: ""
+  #     operationId: "register"
+  #     parameters: 
+  #     - in: "body"
+  #       name: "user"
+  #       description: "submit user"
+  #       required: true
+  #       schema:
+  #         $ref: '#/definitions/SubmitUser'
+  #     responses:
+  #       201:
+  #         description: OK
+  #         schema:
+  #           $ref: '#/definitions/ResponseUser'
+  /test:
+    get:
+      operationId: 'test'
       responses:
         200:
-          description: OK
-          schema:
-            type: string
-  /register:
-    post:
-      tags:
-      - "user"
-      summary: "Register"
-      description: ""
-      operationId: "register"
-      parameters: 
-      - in: "body"
-        name: "user"
-        description: "submit user"
-        required: true
-        schema:
-          $ref: '#/definitions/SubmitUser'
-      responses:
-        201:
-          description: OK
-          schema:
-            $ref: '#/definitions/ResponseUser'
+          description: Ok
+      security:
+      - api_key: []
       
     
 securityDefinitions:
