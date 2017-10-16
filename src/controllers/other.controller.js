@@ -58,13 +58,24 @@ const getStatistic = async (req, res) => {
         }
       }
     })
+    const numberEventHeldThisMonth = await models.Event.count({
+      where: {
+        date: {
+          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.subtract(1, 'D').format(DATE_ONLY_FORMAT)],
+        },
+        status: {
+          $ne: 'draft'
+        }
+      }
+    })
     res.json({
       numberStudent,
       numberStudentThisMonth,
       numberSponsor,
       numberSponsorThisMonth,
       numberEvent,
-      numberEventThisMonth
+      numberEventThisMonth,
+      numberEventHeldThisMonth
     }).end()
   } catch (error) {
     console.log(error)
