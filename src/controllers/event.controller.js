@@ -93,7 +93,7 @@ const deleteEvent = async (req, res) => {
 }
 
 const cancelEvent = async (req, res) => {
-  const sponsor = req.user
+  const sponsor = req.userInfo
   const event = await sponsor.getEvents({ where: { id: req.pathParams.eventId } })
   if (!event) {
     res.status(401).send(`Cannot find event if id ${req.pathParams.eventId}`).end()
