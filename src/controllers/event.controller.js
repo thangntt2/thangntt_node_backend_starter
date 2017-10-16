@@ -95,12 +95,12 @@ const deleteEvent = async (req, res) => {
 const cancelEvent = async (req, res) => {
   const sponsor = req.userInfo
   const event = await sponsor.getEvents({ where: { id: req.pathParams.eventId } })
-  if (!event) {
+  if (!event || event.length === 0) {
     res.status(401).send(`Cannot find event if id ${req.pathParams.eventId}`).end()
     return
   }
   // const event = await models.Event.findOne({ where: { id: req.pathParams.eventId } })
-  await event.update({
+  await event[0].update({
     status: 'canceled'
   })
   return res.status(200).send('Successful cancel event').end()
