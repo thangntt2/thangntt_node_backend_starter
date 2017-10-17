@@ -33,3 +33,11 @@ Install foreverjs to persist API server
 ### Build and run
 
 ```npm run build && npm run start```
+
+## 2. Setup Backend server
+### Install `nginx`
+### Run build
+
+```npm run build```
+
+### Copy build files from `/dist` to nginx serve dir, for example `/var/www/html`

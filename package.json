@@ -4,7 +4,7 @@
   "description": "Starter project for an ES6 RESTful Express API",
   "main": "dist",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon -w src --exec \"babel-node src --presets es2016,stage-0\"",
+    "dev": "cross-env NODE_ENV=development nodemon -w src --exec \"node src --presets es2016,stage-0\"",
     "build": "cross-env NODE_ENV=production babel src -s -D -d dist --presets es2016,stage-0",
     "start": "cross-env NODE_ENV=production forever start dist/index.js",
     "edit": "swagger_swagger_fileName=src/api/swagger/swagger.yaml swagger project edit",
