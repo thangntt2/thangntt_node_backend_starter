@@ -22,13 +22,12 @@ const getSlotRemain = async (req, res) => {
 
 const getStatistic = async (req, res) => {
   try {
-    const now = moment()
     const numberStudent = await models.Student.count({})
     console.log({ numberStudent })
     const numberStudentThisMonth = await models.Student.count({
       where: {
         joinDate: {
-          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
+          $between: [moment().startOf('M').format(DATE_ONLY_FORMAT), moment().endOf('M').format(DATE_ONLY_FORMAT)],
         }
       }
     })
@@ -37,7 +36,7 @@ const getStatistic = async (req, res) => {
     const numberSponsorThisMonth = await models.Sponsor.count({
       where: {
         contactStartDate: {
-          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
+          $between: [moment().startOf('M').format(DATE_ONLY_FORMAT), moment().endOf('M').format(DATE_ONLY_FORMAT)],
         }
       }
     })
@@ -51,7 +50,7 @@ const getStatistic = async (req, res) => {
     const numberEventThisMonth = await models.Event.count({
       where: {
         date: {
-          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.endOf('M').format(DATE_ONLY_FORMAT)],
+          $between: [moment().startOf('M').format(DATE_ONLY_FORMAT), moment().endOf('M').format(DATE_ONLY_FORMAT)],
         },
         status: {
           $ne: 'draft'
@@ -61,7 +60,7 @@ const getStatistic = async (req, res) => {
     const numberEventHeldThisMonth = await models.Event.count({
       where: {
         date: {
-          $between: [now.startOf('M').format(DATE_ONLY_FORMAT), now.subtract(1, 'D').format(DATE_ONLY_FORMAT)],
+          $between: [moment().startOf('M').format(DATE_ONLY_FORMAT), moment().subtract(1, 'days').format(DATE_ONLY_FORMAT)],
         },
         status: {
           $ne: 'draft'
