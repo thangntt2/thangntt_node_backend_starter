@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt'
 const saltRounds = 10
 
+const hashPassword = async (user, options) => {
+  user.password = await bcrypt.hashSync(user.password, saltRounds)
+}
+
 export default (sequelize, DataTypes) => {
   var Student = sequelize.define('Student', {
     familyName: {
@@ -78,13 +82,10 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.ENUM('member', 'under_review', 'deactivated'),
       allowNull: false
     }
-  }, {
-    hooks: {
-      beforeSave: (user, option) => {
-        user.password = bcrypt.hashSync(user.password, saltRounds)
-      }
-    }
   })
+
+  Student.beforeCreate(hashPassword)
+  Student.beforeUpdate(hashPassword)
 
   Student.associate = (models) => {
     Student.belongsToMany(models.Event,
