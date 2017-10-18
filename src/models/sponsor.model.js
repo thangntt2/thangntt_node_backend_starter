@@ -1,3 +1,10 @@
+import bcrypt from 'bcrypt'
+const saltRounds = 10
+
+const hashPassword = async (user, options) => {
+  user.password = await bcrypt.hashSync(user.password, saltRounds)
+}
+
 export default (sequelize, DataTypes) => {
   var Sponsor = sequelize.define('Sponsor', {
     companyName: {
@@ -106,6 +113,9 @@ export default (sequelize, DataTypes) => {
         onDelete: 'cascade'
       })
   }
+
+  Sponsor.beforeUpdate(hashPassword)
+  Sponsor.beforeCreate(hashPassword)
 
   return Sponsor
 }
