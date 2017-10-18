@@ -1,3 +1,6 @@
+import bcrypt from 'bcrypt'
+const saltRounds = 10
+
 export default (sequelize, DataTypes) => {
   var Student = sequelize.define('Student', {
     familyName: {
@@ -74,6 +77,12 @@ export default (sequelize, DataTypes) => {
     status: {
       type: DataTypes.ENUM('member', 'under_review', 'deactivated'),
       allowNull: false
+    }
+  }, {
+    hooks: {
+      beforeSave: (user, option) => {
+        user.password = bcrypt.hashSync(user.password, saltRounds)
+      }
     }
   })
 

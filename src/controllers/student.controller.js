@@ -1,11 +1,10 @@
 import uuidv4 from 'uuid/v4'
-import bcrypt from 'bcrypt'
 import moment from 'moment'
 import sequelize from 'sequelize'
+import bcrypt from 'bcrypt'
 import models from '../models'
 
 const DATE_ONLY_FORMAT = 'YYYY-MM-DD'
-const saltRounds = 10
 
 const fetchAll = async (req, res) => {
   const { limit, offset, search, sort, sortOrder } = req.query
@@ -65,7 +64,7 @@ const newStudent = async (req, res) => {
     department: req.body.department,
     dateOfBirth: req.body.dateOfBirth,
     sex: req.body.sex,
-    password: await bcrypt.hash(req.body.password, saltRounds),
+    password: req.body.password,
     studentCard: req.body.studentCard,
     profileImage: req.body.profileImage,
     studentNumber: req.body.studentNumber,
