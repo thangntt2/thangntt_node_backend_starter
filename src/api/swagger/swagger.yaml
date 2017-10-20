@@ -59,15 +59,7 @@ paths:
       responses:
         200:
           description: Ok
-      security:
-      - api_key: []
-      
-    
-securityDefinitions:
-  api_key:
-    type: "apiKey"
-    name: "Authorization"
-    in: "header"
+
 definitions:
   BaseUser:
     type: "object"
