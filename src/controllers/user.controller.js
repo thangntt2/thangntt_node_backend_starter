@@ -13,15 +13,22 @@ const registerUser = async (req, res) => {
       return
     }
     const newUser = await models.User.create({
-      name: submitUser.name,
-      userName: submitUser.userName,
+      firstName: submitUser.firstName,
+      lastName: submitUser.lastName,
+      userName: submitUser.username,
       email: submitUser.email,
       facebookId: null,
-      password: submitUser.password,
-      description: submitUser.description
+      password: submitUser.password
     })
     await newUser.save()
-    res.json(newUser).end()
+    const jwtoken = jwt.sign({
+      email: newUser.email,
+      facebookId: newUser.facebookId,
+      userName: newUser.userName
+    }, secret, {
+      expiresIn: '6h'
+    })
+    res.json(jwtoken).end()
   } catch (err) {
     console.log(err)
     res.status(500).send(err).end()
@@ -43,17 +50,50 @@ const login = async (req, res) => {
   }
   const jwtoken = jwt.sign({
     email: user.email,
-    name: user.name,
-    userName: user.userName,
     facebookId: user.facebookId,
-    description: user.description
+    userName: user.userName
   }, secret, {
     expiresIn: '6h'
   })
   res.send(jwtoken).end()
 }
 
+const resetPassword = async (req, res) => {
+  const email = req.body.email
+  const user = await models.User.findOne({ where: { email } })
+  if (!user) {
+    res.status(404).send('Cannot find this email').end()
+    return
+  }
+  const jwtoken = jwt.sign({
+    email: user.email,
+    facebookId: user.facebookId,
+    userName: user.userName
+  }, secret, {
+    expiresIn: '6h'
+  })
+  res.status(200).send(`http://localhost:8080/resetpassword?token=${jwtoken}`).end()
+}
+
+const changeLostPassword = async (req, res) => {
+  const { password, token } = req.body
+  if (await jwt.verify(token, secret)) {
+    const userData = await jwt.decode(token)
+    const user = await models.User.findOne({ where: { email: userData.email } })
+    if (!user) {
+      res.status(400).send('No email').end()
+      return
+    }
+    await user.update({
+      password
+    })
+    res.status(200).send('Successful reset password').end()
+  }
+}
+
 export default {
   registerUser,
-  login
+  login,
+  resetPassword,
+  changeLostPassword
 }

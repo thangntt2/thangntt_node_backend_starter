@@ -13,6 +13,8 @@ export default (app) => {
    */
   app.post('/login', Controllers.User.login)
   app.post('/register', Controllers.User.registerUser)
+  app.post('/resetpassword', Controllers.User.resetPassword)
+  app.post('/changeLostPassword', Controllers.User.changeLostPassword)
   /**
    * Router handler
    */
