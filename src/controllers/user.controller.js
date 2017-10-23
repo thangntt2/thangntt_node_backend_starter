@@ -1,6 +1,12 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import MailGun from 'mailgun.js'
 import models from '../models'
+
+const MG_USERNAME = 'api'
+const MG_DOMAIN = 'mail.minesilo.com'
+const MG_APIKEY = 'key-29d2cf4298c31e735a18a9320ab3a29e'
+const mailGunClient = MailGun.client({username: MG_USERNAME, key: process.env.MAILGUN_API_KEY || MG_APIKEY})
 
 const secret = '4d808924-2b7d-46be-9f8d-069834842f80'
 
@@ -72,7 +78,20 @@ const resetPassword = async (req, res) => {
   }, secret, {
     expiresIn: '6h'
   })
-  res.status(200).send(`http://localhost:8080/resetpassword?token=${jwtoken}`).end()
+  const { msg, error } = await mailGunClient.messages.create(MG_DOMAIN, {
+    from: 'The Coin Admin <no-reply@minesilo.com>',
+    to: [user.email],
+    subject: 'Your reset password link',
+    text: `http://localhost:8080/resetpassword?token=${jwtoken}`,
+    html: '<h1>Testing some Mailgun awesomness!</h1>'
+  }).then(msg => ({ msg }))
+    .catch(error => ({ error }))
+  if (!error) {
+    res.status(200).end()
+  } else {
+    console.log(error)
+    res.status(500).end()
+  }
 }
 
 const changeLostPassword = async (req, res) => {
