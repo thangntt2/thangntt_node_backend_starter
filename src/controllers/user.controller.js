@@ -1,7 +1,16 @@
 import bcrypt from 'bcrypt'
+import path from 'path'
 import jwt from 'jsonwebtoken'
 import MailGun from 'mailgun.js'
 import models from '../models'
+import resetHTMLGenerate from '../resource/account_password_reset'
+
+const logoWhitePath = path.join(__dirname, '../resource/emailImage/logo_white.png')
+const unlockedPath = path.join(__dirname, '../resource/emailImage/unlocked.png')
+const socialFacebookPath = path.join(__dirname, '../resource/emailImage/social-facebook.png')
+const twitterPath = path.join(__dirname, '../resource/emailImage/social-twitter.png')
+const instaPath = path.join(__dirname, '../resource/emailImage/social-instagram.png')
+console.log(logoWhitePath)
 
 const MG_USERNAME = 'api'
 const MG_DOMAIN = 'mail.minesilo.com'
@@ -82,8 +91,8 @@ const resetPassword = async (req, res) => {
     from: 'The Coin Admin <no-reply@minesilo.com>',
     to: [user.email],
     subject: 'Your reset password link',
-    text: `http://localhost:8080/resetpassword?token=${jwtoken}`,
-    html: '<h1>Testing some Mailgun awesomness!</h1>'
+    html: resetHTMLGenerate(`http://localhost:8080/resetpassword?token=${jwtoken}`),
+    inline: logoWhitePath
   }).then(msg => ({ msg }))
     .catch(error => ({ error }))
   if (!error) {
