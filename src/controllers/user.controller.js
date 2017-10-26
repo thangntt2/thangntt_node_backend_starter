@@ -2,20 +2,15 @@ import bcrypt from 'bcrypt'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import MailGun from 'mailgun.js'
-import PNGDecoder from 'png-stream/decoder'
+import path from 'path'
 import models from '../models'
 import resetHTMLGenerate from '../resource/account_password_reset'
 
-const loadImage = (dir) =>
-  fs.createReadStream(dir)
-    .pipe(new PNGDecoder())
-
-const logoWhitePath = loadImage(__dirname, '../resource/emailImage/logo_white.png')
-const unlockedPath = loadImage(__dirname, '../resource/emailImage/unlocked.png')
-const socialFacebookPath = loadImage(__dirname, '../resource/emailImage/social-facebook.png')
-const twitterPath = loadImage(__dirname, '../resource/emailImage/social-twitter.png')
-const instaPath = loadImage(__dirname, '../resource/emailImage/social-instagram.png')
-console.log(logoWhitePath)
+const logoWhitePath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/logo_white.png'))
+const unlockedPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/unlocked.png'))
+const socialFacebookPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-facebook.png'))
+const twitterPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-twitter.png'))
+const instaPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-instagram.png'))
 
 const MG_USERNAME = 'api'
 const MG_DOMAIN = 'mail.minesilo.com'
