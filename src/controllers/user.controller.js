@@ -1,15 +1,15 @@
 import bcrypt from 'bcrypt'
-import path from 'path'
+import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import MailGun from 'mailgun.js'
 import models from '../models'
 import resetHTMLGenerate from '../resource/account_password_reset'
 
-const logoWhitePath = path.join(__dirname, '../resource/emailImage/logo_white.png')
-const unlockedPath = path.join(__dirname, '../resource/emailImage/unlocked.png')
-const socialFacebookPath = path.join(__dirname, '../resource/emailImage/social-facebook.png')
-const twitterPath = path.join(__dirname, '../resource/emailImage/social-twitter.png')
-const instaPath = path.join(__dirname, '../resource/emailImage/social-instagram.png')
+const logoWhitePath = fs.createReadStream(__dirname, '../resource/emailImage/logo_white.png')
+const unlockedPath = fs.createReadStream(__dirname, '../resource/emailImage/unlocked.png')
+const socialFacebookPath = fs.createReadStream(__dirname, '../resource/emailImage/social-facebook.png')
+const twitterPath = fs.createReadStream(__dirname, '../resource/emailImage/social-twitter.png')
+const instaPath = fs.createReadStream(__dirname, '../resource/emailImage/social-instagram.png')
 console.log(logoWhitePath)
 
 const MG_USERNAME = 'api'
@@ -92,7 +92,7 @@ const resetPassword = async (req, res) => {
     to: [user.email],
     subject: 'Your reset password link',
     html: resetHTMLGenerate(`http://localhost:8080/resetpassword?token=${jwtoken}`),
-    inline: logoWhitePath
+    inline: [logoWhitePath, unlockedPath, socialFacebookPath, twitterPath, instaPath]
   }).then(msg => ({ msg }))
     .catch(error => ({ error }))
   if (!error) {
