@@ -35,7 +35,6 @@ const registerUser = async (req, res) => {
       facebookId: null,
       password: submitUser.password
     })
-    await newUser.save()
     const jwtoken = jwt.sign({
       email: newUser.email,
       facebookId: newUser.facebookId,
