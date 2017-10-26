@@ -46,6 +46,7 @@
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^3.0.0",
+    "png-stream": "^1.0.5",
     "resource-router-middleware": "^0.6.0",
     "sequelize": "^4.5.0",
     "swagger-express-middleware": "^1.0.0-alpha.12",
