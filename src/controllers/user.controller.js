@@ -3,6 +3,7 @@ import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import MailGun from 'mailgun.js'
 import path from 'path'
+import conf from '../conf'
 import models from '../models'
 import resetHTMLGenerate from '../resource/account_password_reset'
 
@@ -12,12 +13,7 @@ const socialFacebookPath = fs.createReadStream(path.join(__dirname, '../resource
 const twitterPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-twitter.png'))
 const instaPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-instagram.png'))
 
-const MG_USERNAME = 'api'
-const MG_DOMAIN = 'mail.minesilo.com'
-const MG_APIKEY = 'key-29d2cf4298c31e735a18a9320ab3a29e'
-const mailGunClient = MailGun.client({username: MG_USERNAME, key: process.env.MAILGUN_API_KEY || MG_APIKEY})
-
-const secret = '4d808924-2b7d-46be-9f8d-069834842f80'
+const mailGunClient = MailGun.client({username: conf.MG_USERNAME, key: conf.MG_APIKEY})
 
 const registerUser = async (req, res) => {
   const submitUser = req.body
@@ -39,7 +35,7 @@ const registerUser = async (req, res) => {
       email: newUser.email,
       facebookId: newUser.facebookId,
       userName: newUser.userName
-    }, secret, {
+    }, conf.JWT_SECRET, {
       expiresIn: '6h'
     })
     res.json(jwtoken).end()
@@ -66,7 +62,7 @@ const login = async (req, res) => {
     email: user.email,
     facebookId: user.facebookId,
     userName: user.userName
-  }, secret, {
+  }, conf.JWT_SECRET, {
     expiresIn: '6h'
   })
   res.send(jwtoken).end()
@@ -83,14 +79,14 @@ const resetPassword = async (req, res) => {
     email: user.email,
     facebookId: user.facebookId,
     userName: user.userName
-  }, secret, {
+  }, conf.JWT_SECRET, {
     expiresIn: '6h'
   })
-  const { msg, error } = await mailGunClient.messages.create(MG_DOMAIN, {
+  const { msg, error } = await mailGunClient.messages.create(conf.MG_DOMAIN, {
     from: 'The Coin Admin <no-reply@minesilo.com>',
     to: [user.email],
     subject: 'Your reset password link',
-    html: resetHTMLGenerate(`http://localhost:8080/resetpassword?token=${jwtoken}`),
+    html: resetHTMLGenerate(`http://minesilo.com/resetpassword?token=${jwtoken}`),
     inline: [logoWhitePath, unlockedPath, socialFacebookPath, twitterPath, instaPath]
   }).then(msg => ({ msg }))
     .catch(error => ({ error }))
@@ -104,7 +100,7 @@ const resetPassword = async (req, res) => {
 
 const changeLostPassword = async (req, res) => {
   const { password, token } = req.body
-  if (await jwt.verify(token, secret)) {
+  if (await jwt.verify(token, conf.JWT_SECRET)) {
     const userData = await jwt.decode(token)
     const user = await models.User.findOne({ where: { email: userData.email } })
     if (!user) {
