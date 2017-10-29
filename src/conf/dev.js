@@ -12,5 +12,6 @@ export default {
   MG_DOMAIN: 'mail.minesilo.com',
   MG_APIKEY: 'key-29d2cf4298c31e735a18a9320ab3a29e',
   host: 'http://localhost:3000',
+  FRONT_END_URL: 'http://localhost:8080',
   JWT_SECRET: '4d808924-2b7d-46be-9f8d-069834842f80'
 }

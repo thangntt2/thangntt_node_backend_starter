@@ -86,7 +86,7 @@ const resetPassword = async (req, res) => {
     from: 'The Coin Admin <no-reply@minesilo.com>',
     to: [user.email],
     subject: 'Your reset password link',
-    html: resetHTMLGenerate(`http://minesilo.com/resetpassword?token=${jwtoken}`),
+    html: resetHTMLGenerate(`${conf.FRONT_END_URL}/resetpassword?token=${jwtoken}`),
     inline: [logoWhitePath, unlockedPath, socialFacebookPath, twitterPath, instaPath]
   }).then(msg => ({ msg }))
     .catch(error => ({ error }))
