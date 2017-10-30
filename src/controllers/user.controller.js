@@ -13,8 +13,6 @@ const socialFacebookPath = fs.createReadStream(path.join(__dirname, '../resource
 const twitterPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-twitter.png'))
 const instaPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-instagram.png'))
 
-const mailGunClient = MailGun.client({username: conf.MG_USERNAME, key: conf.MG_APIKEY})
-
 const registerUser = async (req, res) => {
   const submitUser = req.body
   try {
@@ -82,6 +80,7 @@ const resetPassword = async (req, res) => {
   }, conf.JWT_SECRET, {
     expiresIn: '6h'
   })
+  const mailGunClient = MailGun.client({username: conf.MG_USERNAME, key: conf.MG_APIKEY})
   const { msg, error } = await mailGunClient.messages.create(conf.MG_DOMAIN, {
     from: 'The Coin Admin <no-reply@minesilo.com>',
     to: [user.email],
