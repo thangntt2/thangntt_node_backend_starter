@@ -16,6 +16,13 @@ export default (app) => {
   app.post('/resetpassword', Controllers.User.resetPassword)
   app.post('/changeLostPassword', Controllers.User.changeLostPassword)
   /**
+   * Web socket routes
+   */
+  app.ws('/ws/stats', Controllers.Stats)
+  app.get('/ws/stats', (req, res, next) => {
+    res.send(req.dataCache.toObject()).end()
+  })
+  /**
    * Router handler
    */
   app.all('/api/*', (req, res, next) => {

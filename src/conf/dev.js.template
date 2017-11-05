@@ -2,7 +2,7 @@ import path from 'path'
 export default {
   MYSQL_DB: 'crypto',
   MYSQL_USER: 'root',
-  MYSQL_PASSWORD: 'nhuthienthu1',
+  MYSQL_PASSWORD: 'root',
   MYSQL_HOST: 'localhost',
   PORT: 3000,
   appRoot: path.join(__dirname, '../'),
