@@ -6,7 +6,7 @@ import path from 'path'
 import conf from '../conf'
 import models from '../models'
 import resetHTMLGenerate from '../resource/account_password_reset'
-
+import sendEmail from '../lib/mailgun'
 const logoWhitePath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/logo_white.png'))
 const unlockedPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/unlocked.png'))
 const socialFacebookPath = fs.createReadStream(path.join(__dirname, '../resource/emailImage/social-facebook.png'))
@@ -80,21 +80,23 @@ const resetPassword = async (req, res) => {
   }, conf.JWT_SECRET, {
     expiresIn: '6h'
   })
-  const mailGunClient = MailGun.client({username: conf.MG_USERNAME, key: conf.MG_APIKEY})
-  const { msg, error } = await mailGunClient.messages.create(conf.MG_DOMAIN, {
-    from: 'The Coin Admin <no-reply@minesilo.com>',
-    to: [user.email],
-    subject: 'Your reset password link',
-    html: resetHTMLGenerate(`${conf.FRONT_END_URL}/resetpassword?token=${jwtoken}`),
-    inline: [logoWhitePath, unlockedPath, socialFacebookPath, twitterPath, instaPath]
-  }).then(msg => ({ msg }))
-    .catch(error => ({ error }))
-  if (!error) {
-    res.status(200).end()
-  } else {
-    console.log(error)
-    res.status(500).end()
-  }
+  // const mailGunClient = MailGun.client({username: conf.MG_USERNAME, key: conf.MG_APIKEY})
+  // const { msg, error } = await mailGunClient.messages.create(conf.MG_DOMAIN, {
+  //   from: 'The Coin Admin <no-reply@minesilo.com>',
+  //   to: [user.email],
+  //   subject: 'Your reset password link',
+  //   html: resetHTMLGenerate(`${conf.FRONT_END_URL}/resetpassword?token=${jwtoken}`),
+  //   inline: [logoWhitePath, unlockedPath, socialFacebookPath, twitterPath, instaPath]
+  // }).then(msg => ({ msg }))
+  //   .catch(error => ({ error }))
+  // if (!error) {
+  //   res.status(200).end()
+  // } else {
+  //   console.log(error)
+  //   res.status(500).end()
+  // }
+  sendEmail(user, jwtoken)
+  res.status(200).end()
 }
 
 const changeLostPassword = async (req, res) => {
